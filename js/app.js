@@ -671,8 +671,16 @@ class MobiCheckApp {
     const btnPass = document.getElementById('btnSpeakerPass');
     const btnFail = document.getElementById('btnSpeakerFail');
 
-    btnPlay440.onclick = () => this.audioTester.playTestTone(440, 1.2, 0);
-    btnPlay1000.onclick = () => this.audioTester.playTestTone(1000, 1.0, 0);
+    btnPlay440.onclick = () => {
+      btnPlay440.classList.add('playing');
+      this.audioTester.playTestTone(440, 1.2, 0);
+      setTimeout(() => btnPlay440.classList.remove('playing'), 1200);
+    };
+    btnPlay1000.onclick = () => {
+      btnPlay1000.classList.add('playing');
+      this.audioTester.playTestTone(1000, 1.0, 0);
+      setTimeout(() => btnPlay1000.classList.remove('playing'), 1000);
+    };
 
     const onFinish = (status, val, note) => {
       this.audioTester.cleanup();

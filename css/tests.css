@@ -451,6 +451,29 @@
   100% { transform: scale(1.6); opacity: 0; }
 }
 
+.speaker-test-container .btn-secondary {
+  border-radius: var(--radius-md);
+  height: 46px;
+  font-size: 13.5px;
+  background-color: var(--mc-panel);
+  border: 1.5px solid var(--mc-line);
+  box-shadow: 0 2px 6px rgba(18, 22, 27, 0.05);
+}
+
+.speaker-test-container .btn-secondary:hover {
+  border-color: var(--mc-ok);
+  color: var(--mc-ok);
+  background-color: var(--mc-ok-bg);
+}
+
+.speaker-test-container .btn-secondary.playing {
+  background-color: var(--mc-ok-bg);
+  border-color: var(--mc-ok);
+  color: var(--mc-ok);
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.2);
+  transform: scale(0.98);
+}
+
 /* ==================== 6. MOTION & ORIENTATION TEST ==================== */
 .motion-test-container {
   padding: 20px 16px;
