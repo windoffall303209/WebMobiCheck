@@ -123,10 +123,18 @@ export async function getDeviceSummary() {
   }
 
   // Thông số Mạng
+  const isMobile = /Mobi|Android|iPhone/i.test(ua);
   const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  let effectiveType = 'Wi-Fi / LAN';
+  if (conn && conn.effectiveType) {
+    effectiveType = isMobile ? conn.effectiveType.toUpperCase() : 'Wi-Fi / LAN';
+  } else if (!navigator.onLine) {
+    effectiveType = 'Ngoại tuyến';
+  }
+
   const networkInfo = {
     online: navigator.onLine,
-    effectiveType: conn && conn.effectiveType ? conn.effectiveType.toUpperCase() : (navigator.onLine ? 'Wi-Fi / Ethernet' : 'Ngoại tuyến'),
+    effectiveType,
     downlink: conn && conn.downlink ? `${conn.downlink} Mbps` : 'Băng thông rộng',
     rtt: conn && conn.rtt ? `${conn.rtt} ms` : '< 50 ms'
   };
