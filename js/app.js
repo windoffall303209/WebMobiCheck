@@ -53,18 +53,41 @@ class MobiCheckApp {
     this.renderReportScreen();
   }
 
-  // Gắn sự kiện chuyển tab cho thanh điều hướng dưới đáy màn hình.
+  // Gắn sự kiện chuyển tab cho thanh điều hướng dưới đáy và thanh tab trên Desktop.
   bindNavigation() {
-    const navItems = document.querySelectorAll('.bottom-nav .nav-item');
-    navItems.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const targetScreen = btn.getAttribute('data-screen');
-        this.switchScreen(targetScreen);
+    const bottomNavItems = document.querySelectorAll('.bottom-nav .nav-item');
+    const headerNavTabs = document.querySelectorAll('.header-nav-tabs .header-tab-btn');
 
-        navItems.forEach((i) => i.classList.remove('active'));
-        btn.classList.add('active');
+    const handleTabClick = (btn) => {
+      const targetScreen = btn.getAttribute('data-screen');
+      if (targetScreen) {
+        this.switchScreen(targetScreen);
+      }
+    };
+
+    bottomNavItems.forEach((btn) => btn.addEventListener('click', () => handleTabClick(btn)));
+    headerNavTabs.forEach((btn) => btn.addEventListener('click', () => handleTabClick(btn)));
+
+    // Gắn sự kiện chuyển đổi chế độ xem Desktop / Giả lập điện thoại
+    const btnToggleView = document.getElementById('btnToggleViewMode');
+    const frame = document.querySelector('.device-frame');
+    const iconView = document.getElementById('iconViewMode');
+    const textView = document.getElementById('textViewMode');
+
+    if (btnToggleView && frame) {
+      btnToggleView.addEventListener('click', () => {
+        const isSim = frame.classList.toggle('mode-phone-sim');
+        if (isSim) {
+          if (iconView) iconView.innerHTML = '<use href="assets/icons.svg#icon-desktop"></use>';
+          if (textView) textView.innerText = 'Mở rộng Desktop';
+        } else {
+          if (iconView) iconView.innerHTML = '<use href="assets/icons.svg#icon-phone"></use>';
+          if (textView) textView.innerText = 'Xem dạng điện thoại';
+        }
+        // Gọi lại resize cho các canvas kiểm tra đang mở
+        window.dispatchEvent(new Event('resize'));
       });
-    });
+    }
   }
 
   // Gắn sự kiện đóng mở menu ngăn kéo (Drawer menu).
@@ -92,20 +115,13 @@ class MobiCheckApp {
         const targetScreen = link.getAttribute('data-screen');
         if (targetScreen) {
           this.switchScreen(targetScreen);
-          document.querySelectorAll('.bottom-nav .nav-item').forEach((item) => {
-            if (item.getAttribute('data-screen') === targetScreen) {
-              item.classList.add('active');
-            } else {
-              item.classList.remove('active');
-            }
-          });
         }
         backdrop.classList.remove('open');
       });
     });
   }
 
-  // Chuyển đổi qua lại giữa các màn hình chức năng chính.
+  // Chuyển đổi qua lại giữa các màn hình chức năng và đồng bộ trạng thái thanh điều hướng.
   switchScreen(screenId) {
     const screens = document.querySelectorAll('.app-screen');
     screens.forEach((s) => s.classList.remove('active'));
@@ -116,6 +132,16 @@ class MobiCheckApp {
       const container = document.querySelector('.screen-container');
       if (container) container.scrollTop = 0;
     }
+
+    // Đồng bộ trạng thái active trên Bottom Nav
+    document.querySelectorAll('.bottom-nav .nav-item').forEach((item) => {
+      item.classList.toggle('active', item.getAttribute('data-screen') === screenId);
+    });
+
+    // Đồng bộ trạng thái active trên Desktop Header Tabs
+    document.querySelectorAll('.header-nav-tabs .header-tab-btn').forEach((item) => {
+      item.classList.toggle('active', item.getAttribute('data-screen') === screenId);
+    });
 
     if (screenId === 'screenReport') {
       this.renderReportScreen();

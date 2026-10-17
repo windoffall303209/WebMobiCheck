@@ -121,6 +121,19 @@
   gap: 6px;
 }
 
+@media (max-width: 360px) {
+  .stats-grid-row {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+}
+
+@media (min-width: 768px) {
+  .stats-grid-row {
+    gap: 8px;
+  }
+}
+
 .stat-box {
   background-color: var(--mc-panel2);
   border: 1px solid var(--mc-line);
@@ -320,16 +333,107 @@
   border-radius: var(--radius-full);
 }
 
-/* Quick Test Grid (Matching item_figma_test_card.xml) */
+/* Quick Test Grid (Matching item_figma_test_card.xml) - Đa dạng kích thước màn hình */
 .test-cards-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 8px;
 }
 
-@media (min-width: 400px) {
+@media (max-width: 340px) {
   .test-cards-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+}
+
+@media (min-width: 600px) {
+  .test-cards-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+}
+
+@media (min-width: 960px) {
+  .test-cards-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .test-cards-grid.catalog-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+/* ==================== BỐ CỤC ĐA CỘT CHO MÀN HÌNH RỘNG (DESKTOP & TABLET) ==================== */
+.home-responsive-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.home-left-col, .home-right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+@media (min-width: 768px) {
+  .device-frame:not(.mode-phone-sim) .home-responsive-layout {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+}
+
+@media (min-width: 1024px) {
+  .device-frame:not(.mode-phone-sim) .home-responsive-layout {
+    grid-template-columns: 390px 1fr;
+    gap: 24px;
+  }
+}
+
+/* Bố cục 2 cột cho Báo cáo */
+.report-responsive-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.report-left-col, .report-right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+@media (min-width: 768px) {
+  .device-frame:not(.mode-phone-sim) .report-responsive-layout {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+}
+
+/* Bố cục 2 cột cho Giới thiệu */
+.about-responsive-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.about-left-col, .about-right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+@media (min-width: 768px) {
+  .device-frame:not(.mode-phone-sim) .about-responsive-layout {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 20px;
+    align-items: start;
   }
 }
 

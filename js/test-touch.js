@@ -61,10 +61,20 @@ export class TouchTest {
     this.container.innerHTML = '';
   }
 
-  // Cập nhật lại kích thước canvas để khớp với tỷ lệ màn hình vật lý.
+  // Cập nhật lại kích thước canvas và điều chỉnh số hàng/cột theo tỷ lệ khung nhìn (ngang/dọc).
   resizeCanvases() {
     const rect = this.container.getBoundingClientRect();
     const dpr = window.devicePixelRatio || 1;
+
+    // Tự động điều chỉnh số hàng và cột theo chiều ngang hoặc dọc
+    if (rect.width > rect.height) {
+      this.cols = 14;
+      this.rows = 8;
+    } else {
+      this.cols = 8;
+      this.rows = 14;
+    }
+    this.totalCells = this.cols * this.rows;
 
     this.gridCanvas.width = rect.width * dpr;
     this.gridCanvas.height = rect.height * dpr;
