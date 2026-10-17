@@ -1,0 +1,7 @@
+# Logs & Temporary files
+node_modules/
+.DS_Store
+*.log
+dist/
+.vscode/
+.idea/
