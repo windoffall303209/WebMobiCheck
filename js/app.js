@@ -262,6 +262,17 @@ class MobiCheckApp {
         btn.addEventListener('click', () => this.renderHardwareDetail(tab));
       }
     });
+
+    // Gắn sự kiện cho nút X ở góc trên bên phải đóng bài kiểm tra tương tác
+    document.querySelectorAll('.btn-modal-close').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const modalId = btn.getAttribute('data-close-modal') || btn.closest('.test-modal-overlay')?.id;
+        if (modalId) {
+          this.cancelCurrentInteractiveTest(modalId);
+        }
+      });
+    });
   }
 
   // Mở màn hình Cấu hình phần cứng chi tiết với tab tương ứng.
@@ -908,6 +919,28 @@ class MobiCheckApp {
   closeModal(modalId) {
     const m = document.getElementById(modalId);
     if (m) m.classList.remove('active');
+  }
+
+  // Dừng bài kiểm tra đang hiển thị và đóng modal an toàn khi người dùng bấm nút X ở góc trên bên phải.
+  cancelCurrentInteractiveTest(modalId) {
+    if (modalId === 'modalDisplayTest' && this.displayTester) {
+      this.displayTester.stop();
+    } else if (modalId === 'modalTouchTest' && this.touchTester) {
+      this.touchTester.stop();
+    } else if (modalId === 'modalSpeakerTest' && this.audioTester) {
+      this.audioTester.cleanup();
+    } else if (modalId === 'modalMicTest' && this.micTester) {
+      this.micTester.cleanup();
+    } else if (modalId === 'modalCameraTest' && this.cameraTester) {
+      this.cameraTester.cleanup();
+    } else if (modalId === 'modalMotionTest' && this.motionTester) {
+      this.motionTester.stop();
+    } else if (modalId === 'modalRunner' && this.runner) {
+      this.runner.stop();
+    }
+
+    this.closeModal(modalId);
+    this.resolveInteractiveTest(null);
   }
 
 
