@@ -234,10 +234,10 @@ class MobiCheckApp {
     if (btnQuickDisplay) btnQuickDisplay.addEventListener('click', () => this.launchInteractiveTestModal('display'));
     if (btnQuickTouch) btnQuickTouch.addEventListener('click', () => this.launchInteractiveTestModal('touch'));
     if (btnQuickCamera) btnQuickCamera.addEventListener('click', () => this.launchInteractiveTestModal('camera'));
-    if (btnQuickSpeaker) btnQuickSpeaker.addEventListener('click', () => this.launchInteractiveTestModal('audio'));
+    if (btnQuickSpeaker) btnQuickSpeaker.addEventListener('click', () => this.launchInteractiveTestModal('speaker'));
     if (btnQuickMic) btnQuickMic.addEventListener('click', () => this.launchInteractiveTestModal('microphone'));
     if (btnQuickVibrate) btnQuickVibrate.addEventListener('click', () => this.runVibrateCheck());
-    if (btnQuickSensor) btnQuickSensor.addEventListener('click', () => this.launchInteractiveTestModal('motion'));
+    if (btnQuickSensor) btnQuickSensor.addEventListener('click', () => this.startSingleTest('sensor'));
     if (btnQuickBattery) btnQuickBattery.addEventListener('click', () => this.openHardwareDetail('battery'));
 
     // 3 Thẻ thông số phần cứng chi tiết trên Home
@@ -488,9 +488,12 @@ class MobiCheckApp {
     if (!stage) return;
 
     if (!stage.webSupported) {
+      const isSensor = stage.id === 'sensor';
       this.showNoticeModal({
         title: stage.name || 'Yêu cầu ứng dụng MobiCheck',
-        message: `Hạng mục "${stage.name}" yêu cầu quyền Native sâu (IMEI, chu kỳ pin, phần cứng bo mạch).\n\nVui lòng cài đặt ứng dụng Android MobiCheck để kiểm tra.`,
+        message: isSensor
+          ? `Hạng mục "${stage.name}" (cảm biến ánh sáng, tiệm cận, nhiệt độ, từ trường) yêu cầu truy cập phần cứng cảm biến Android Native.\n\nVui lòng cài đặt ứng dụng Android MobiCheck để kiểm tra.`
+          : `Hạng mục "${stage.name}" yêu cầu quyền Native sâu (IMEI, chu kỳ pin, phần cứng bo mạch).\n\nVui lòng cài đặt ứng dụng Android MobiCheck để kiểm tra.`,
         showDownload: true,
         cancelText: 'Hủy',
         downloadText: 'Tải app'
@@ -502,10 +505,6 @@ class MobiCheckApp {
       await this.runner.runStage(stage);
       this.updateCardStatusDots();
       this.openHardwareDetail('battery');
-    } else if (stage.id === 'storage') {
-      await this.runner.runStage(stage);
-      this.updateCardStatusDots();
-      this.openHardwareDetail('storage');
     } else if (stage.id === 'connectivity') {
       await this.runNetworkCheck();
     } else if (stage.id === 'vibrate') {
@@ -566,6 +565,7 @@ class MobiCheckApp {
           this.openTouchModal();
           break;
         case 'speaker':
+        case 'audio':
           this.openSpeakerModal();
           break;
         case 'microphone':

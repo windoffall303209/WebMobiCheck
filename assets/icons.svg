@@ -58,9 +58,24 @@
       <path fill="currentColor" d="M0,15h2V9H0v6zm3,2h2V7H3v10zm19,-8v6h2V9h-2zm-3,8h2V7h-2v10zM16.5,3h-9C6.67,3 6,3.67 6,4.5v15c0,0.83 0.67,1.5 1.5,1.5h9c0.83,0 1.5,-0.67 1.5,-1.5v-15c0,-0.83 -0.67,-1.5 -1.5,-1.5zM16,19H8V5h8v14z"/>
     </symbol>
 
-    <!-- Sensor / Motion: Exact vector from Android ic_devcheck_sensor.xml (viewport 24x24) -->
+    <!-- Sensor / Environment: Sóng cảm biến môi trường radar đa tầng (viewport 24x24) -->
     <symbol id="icon-sensor" viewBox="0 0 24 24">
-      <path fill="currentColor" d="M12,2C6.48,2 2,6.48 2,12s4.48,10 10,10 10,-4.48 10,-10S17.52,2 12,2zm0,18c-4.41,0 -8,-3.59 -8,-8s3.59,-8 8,-8 8,3.59 8,8 -3.59,8 -8,8zm-1,-13h2v4h-2zm0,6h2v2h-2zm-5,-1h4v2H6zm10,0h4v2h-4z"/>
+      <path fill="currentColor" d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm-7 4c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7-7-3.13-7-7zm-3 0c0 5.52 4.48 10 10 10s10-4.48 10-10S17.52 2 12 2 2 6.48 2 12zm10-2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+    </symbol>
+
+    <!-- Motion / Gyroscope: Screen rotation with 3D arrows (viewport 24x24) -->
+    <symbol id="icon-motion" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M16.48 2.52c3.27 1.55 5.61 4.72 5.97 8.48h1.5C23.44 5.9 19.34 1.76 14.18 1.05v1.52c.8.12 1.57.36 2.3.95zM7.52 21.48C4.25 19.93 1.91 16.76 1.55 13H.05C.56 18.1 4.66 22.24 9.82 22.95v-1.52c-.8-.12-1.57-.36-2.3-.95zM10.23 1.66v2.05c-2.48.59-4.5 2.2-5.46 4.39L6.4 8.9c.74-1.74 2.33-3.04 4.28-3.51V7.6l3.24-2.97-3.69-2.97zm3.54 20.68v-2.05c2.48-.59 4.5-2.2 5.46-4.39l-1.63-.8c-.74 1.74-2.33 3.04-4.28 3.51v-2.21l-3.24 2.97 3.69 2.97zM14.83 13.41L9 7.59 7.59 9l5.83 5.83 1.41-1.42z"/>
+    </symbol>
+
+    <!-- Flash / Torch: Chuẩn Material Design flash_on (viewport 24x24) -->
+    <symbol id="icon-flash" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M7 2v11h3v9l7-12h-4l4-8H7z"/>
+    </symbol>
+
+    <!-- Flip Camera: Chuẩn Material Design flip_camera (viewport 24x24) -->
+    <symbol id="icon-flip-camera" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M20 4h-3.17L15 2H9L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 11.5V13H9v2.5L5.5 12 9 8.5V11h6V8.5l3.5 3.5-3.5 3.5z"/>
     </symbol>
 
     <!-- Network: Exact vector from Android ic_devcheck_network.xml (viewport 24x24) -->

@@ -128,8 +128,8 @@ export const QUICK_CHECK_STAGES = [
     name: 'Cảm biến & Môi trường',
     category: 'environment',
     icon: 'sensor',
-    webSupported: true,
-    description: 'Cảm biến ánh sáng (Ambient Light API) và tiệm cận màn hình.'
+    webSupported: false,
+    description: 'Cảm biến ánh sáng, tiệm cận, nhiệt độ và môi trường. Yêu cầu App MobiCheck.'
   },
   {
     id: 'battery',
@@ -146,14 +146,6 @@ export const QUICK_CHECK_STAGES = [
     icon: 'network',
     webSupported: true,
     description: 'Loại kết nối (4G/5G/Wi-Fi), đo độ trễ Ping thực tế và GPS GNSS.'
-  },
-  {
-    id: 'storage',
-    name: 'Bộ nhớ lưu trữ Web',
-    category: 'system',
-    icon: 'storage',
-    webSupported: true,
-    description: 'Dung lượng bộ nhớ khả dụng và hạn mức cấp phát cho trình duyệt.'
   },
   {
     id: 'vibrate',
