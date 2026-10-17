@@ -27,10 +27,10 @@
         </div>
 
         <div class="header-actions">
-          <button class="btn-header-download" id="btnHeaderDownloadApp" aria-label="Tải ứng dụng MobiCheck">
+          <a href="https://play.google.com/store/apps/details?id=com.luuthanh.appcaller&pcampaignid=web_share" target="_blank" rel="noopener noreferrer" class="btn-header-download" id="btnHeaderDownloadApp" aria-label="Tải ứng dụng trên Google Play">
             <svg width="15" height="15" viewBox="0 0 24 24"><use href="assets/icons.svg#icon-download"></use></svg>
             <span>Tải App</span>
-          </button>
+          </a>
         </div>
       </header>
 
@@ -183,9 +183,9 @@
                 <p class="limitation-desc">
                   Một số thông tin thiết bị và kiểm tra phần cứng không thể thực hiện trong Quick Check. Cài MobiCheck để kiểm tra chi tiết hơn.
                 </p>
-                <button class="limitation-link-btn" id="btnBannerDownloadApp">
-                  Tìm hiểu ứng dụng Android MobiCheck (Full Check) &rarr;
-                </button>
+                <a href="https://play.google.com/store/apps/details?id=com.luuthanh.appcaller&pcampaignid=web_share" target="_blank" rel="noopener noreferrer" class="limitation-link-btn" id="btnBannerDownloadApp">
+                  Cài đặt MobiCheck trên Google Play (CH Play) &rarr;
+                </a>
               </div>
             </div>
 
@@ -402,6 +402,9 @@
                     <p class="limitation-desc">
                       Trình duyệt không thể đọc mã IMEI, bo mạch chip, độ chai pin chi tiết. Cài đặt MobiCheck Android để chạy Full Check.
                     </p>
+                    <a href="https://play.google.com/store/apps/details?id=com.luuthanh.appcaller&pcampaignid=web_share" target="_blank" rel="noopener noreferrer" class="limitation-link-btn" style="margin-top: 4px;">
+                      Cài đặt trên Google Play &rarr;
+                    </a>
                   </div>
                 </div>
 
@@ -436,82 +439,9 @@
           </div>
         </section>
 
-        <!-- ==================== 4. GIỚI THIỆU & CÀI APP (SCREEN ABOUT) ==================== -->
-        <section class="app-screen" id="screenAbout">
-          <div class="page-content">
-            <div class="about-responsive-layout">
-              <!-- Cột trái: Thông tin MobiCheck & Nút cài đặt -->
-              <div class="about-left-col">
-                <div class="mc-card" style="text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 24px 16px;">
-                  <svg width="48" height="48" viewBox="-1 -1 34 34"><use href="assets/icons.svg#icon-logo"></use></svg>
-                  <h2 style="font-size: 18px; font-weight: 700; color: var(--mc-brand);">MobiCheck — Quick Check</h2>
-                  <span class="badge-pill green">Phiên bản Web 1.0</span>
-                  <p style="font-size: 12.5px; color: var(--mc-dim); line-height: 1.45; margin-top: 4px;">
-                    Công cụ kiểm định nhanh phần cứng thiết bị di động không cần cài đặt ứng dụng.
-                  </p>
-                </div>
-
-                <!-- Nút liên kết tải App -->
-                <div class="main-actions-group">
-                  <a href="https://play.google.com/store/apps/developer?id=Thanhvanluu" target="_blank" rel="noopener noreferrer" class="btn-primary" style="text-decoration: none;">
-                    <svg><use href="assets/icons.svg#icon-play"></use></svg>
-                    <span>Mở Google Play Store</span>
-                  </a>
-                </div>
-
-                <div style="text-align: center; font-size: 11px; color: var(--mc-dim); padding: 8px 0;">
-                  Phát triển bởi Thanhvanluu • Bản quyền MobiCheck © 2026
-                </div>
-              </div>
-
-              <!-- Cột phải: Bảng so sánh Quick Check vs Android App -->
-              <div class="about-right-col">
-                <div class="section-header-row" style="margin-top: 0;">
-                  <span class="section-title">So sánh Quick Check & Android App</span>
-                </div>
-
-                <div class="mc-card specs-list">
-                  <div class="spec-item-row">
-                    <span class="spec-label">Màn hình & Điểm chết</span>
-                    <span class="spec-val" style="color: var(--mc-ok);">Cả hai hỗ trợ</span>
-                  </div>
-                  <div class="spec-item-row">
-                    <span class="spec-label">Cảm ứng & Đa điểm chạm</span>
-                    <span class="spec-val" style="color: var(--mc-ok);">Cả hai hỗ trợ</span>
-                  </div>
-                  <div class="spec-item-row">
-                    <span class="spec-label">Camera trước / sau & Flash</span>
-                    <span class="spec-val" style="color: var(--mc-ok);">Cả hai hỗ trợ</span>
-                  </div>
-                  <div class="spec-item-row">
-                    <span class="spec-label">Microphone & Loa ngoài</span>
-                    <span class="spec-val" style="color: var(--mc-ok);">Cả hai hỗ trợ</span>
-                  </div>
-                  <div class="spec-item-row">
-                    <span class="spec-label">Con quay & Gia tốc kế</span>
-                    <span class="spec-val" style="color: var(--mc-ok);">Cả hai hỗ trợ</span>
-                  </div>
-                  <div class="spec-item-row">
-                    <span class="spec-label">Đọc mã IMEI & Số Serial</span>
-                    <span class="spec-val" style="color: var(--mc-warn);">Chỉ App Android</span>
-                  </div>
-                  <div class="spec-item-row">
-                    <span class="spec-label">Chu kỳ sạc & Độ chai pin sâu</span>
-                    <span class="spec-val" style="color: var(--mc-warn);">Chỉ App Android</span>
-                  </div>
-                  <div class="spec-item-row">
-                    <span class="spec-label">Phần cứng bo mạch & Cảm biến sâu</span>
-                    <span class="spec-val" style="color: var(--mc-warn);">Chỉ App Android</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
       </main>
 
-      <!-- Bottom Navigation Bar -->
+      <!-- Bottom Navigation Bar: 3 Tab chuẩn Quick Check -->
       <nav class="bottom-nav">
         <button class="nav-item active" data-screen="screenHome">
           <svg><use href="assets/icons.svg#icon-device-mockup"></use></svg>
@@ -524,10 +454,6 @@
         <button class="nav-item" data-screen="screenReport">
           <svg><use href="assets/icons.svg#icon-storage"></use></svg>
           <span>Báo cáo</span>
-        </button>
-        <button class="nav-item" data-screen="screenAbout">
-          <svg><use href="assets/icons.svg#icon-chip"></use></svg>
-          <span>Cài App</span>
         </button>
       </nav>
 
@@ -557,10 +483,10 @@
               <svg><use href="assets/icons.svg#icon-storage"></use></svg>
               <span>Báo cáo kết quả</span>
             </a>
-            <a href="#" class="drawer-link" data-screen="screenAbout">
-              <svg><use href="assets/icons.svg#icon-chip"></use></svg>
-              <span>So sánh & Cài App Android</span>
-              <span class="drawer-link-badge">Full Check</span>
+            <a href="https://play.google.com/store/apps/details?id=com.luuthanh.appcaller&pcampaignid=web_share" target="_blank" rel="noopener noreferrer" class="drawer-link">
+              <svg><use href="assets/icons.svg#icon-download"></use></svg>
+              <span>Cài đặt App trên Google Play</span>
+              <span class="drawer-link-badge">CH Play</span>
             </a>
           </div>
 

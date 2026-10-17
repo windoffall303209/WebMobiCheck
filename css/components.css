@@ -751,27 +751,7 @@
   white-space: nowrap;
 }
 
-/* Bố cục 2 cột cho Giới thiệu */
-.about-responsive-layout {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
 
-.about-left-col, .about-right-col {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-@media (min-width: 768px) {
-  .device-frame:not(.mode-phone-sim) .about-responsive-layout {
-    display: grid;
-    grid-template-columns: 320px 1fr;
-    gap: 20px;
-    align-items: start;
-  }
-}
 
 .test-card-item {
   background-color: var(--mc-panel);
