@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>MobiCheck — Quick Check Trình Duyệt</title>
+  <meta name="description" content="MobiCheck Quick Check - Kiểm tra màn hình, cảm ứng, camera, microphone, loa ngoài, cảm biến chuyển động và cấu hình điện thoại trực tiếp trên trình duyệt web.">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/tests.css">
+</head>
+<body>
+  <!-- Container khung thiết bị -->
+  <div id="app-root">
+    <div class="device-frame">
+
+      <!-- Top App Bar -->
+      <header class="top-header">
+        <div class="brand-badge-group">
+          <div class="brand-logo-icon">
+            <svg width="28" height="28"><use href="assets/icons.svg#icon-logo"></use></svg>
+          </div>
+          <div class="brand-text-col">
+            <span class="brand-title">MobiCheck</span>
+            <span class="brand-subtitle-tag">Quick Check</span>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button class="icon-button" id="btnOpenMenu" aria-label="Mở menu">
+            <svg><use href="assets/icons.svg#icon-menu"></use></svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- Vùng cuộn chứa nội dung các màn hình -->
+      <main class="screen-container">
+
+        <!-- ==================== 1. TRANG CHỦ (SCREEN HOME) ==================== -->
+        <section class="app-screen active" id="screenHome">
+          <div class="page-content">
+
+            <!-- Thẻ Hero thông tin thiết bị -->
+            <div class="mc-card device-hero-card">
+              <div class="device-header-row">
+                <div class="device-mockup-wrapper">
+                  <svg><use href="assets/icons.svg#icon-device-mockup"></use></svg>
+                </div>
+                <div class="device-info-col">
+                  <h1 class="device-title" id="heroDeviceTitle">Đang nhận diện...</h1>
+                  <span class="device-sub" id="heroDeviceSub">Khởi tạo môi trường Web</span>
+                  <div class="device-badge-row">
+                    <span class="badge-pill green" id="heroDeviceBadge">Quick Check • Web</span>
+                    <span class="badge-pill gray">Không cần cài app</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Lưới 4 ô thống kê: CPU, RAM, Lưu trữ, Pin -->
+              <div class="stats-grid-row">
+                <div class="stat-box" id="boxCpu">
+                  <div class="stat-box-top">
+                    <svg><use href="assets/icons.svg#icon-chip"></use></svg>
+                    <span class="stat-box-label">CPU</span>
+                  </div>
+                  <div class="stat-box-value" id="statValCpu">--</div>
+                  <div class="stat-box-sub">Luồng xử lý</div>
+                </div>
+
+                <div class="stat-box" id="boxRam">
+                  <div class="stat-box-top">
+                    <svg><use href="assets/icons.svg#icon-ram"></use></svg>
+                    <span class="stat-box-label">RAM</span>
+                  </div>
+                  <div class="stat-box-value" id="statValRam">--</div>
+                  <div class="stat-box-sub">Ước tính (RS-006)</div>
+                </div>
+
+                <div class="stat-box" id="boxStorage">
+                  <div class="stat-box-top">
+                    <svg><use href="assets/icons.svg#icon-storage"></use></svg>
+                    <span class="stat-box-label">Lưu trữ</span>
+                  </div>
+                  <div class="stat-box-value" id="statValStorage">--</div>
+                  <div class="stat-box-sub">Bộ nhớ Web</div>
+                </div>
+
+                <div class="stat-box" id="boxBattery">
+                  <div class="stat-box-top">
+                    <svg><use href="assets/icons.svg#icon-battery"></use></svg>
+                    <span class="stat-box-label">Pin</span>
+                  </div>
+                  <div class="stat-box-value" id="statValBattery">--</div>
+                  <div class="stat-box-sub">Trạng thái sạc</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Banner giới hạn Quick Check Web (Yêu cầu nghiệp vụ) -->
+            <div class="limitation-alert-banner">
+              <div class="limitation-icon">
+                <svg><use href="assets/icons.svg#icon-alert"></use></svg>
+              </div>
+              <div class="limitation-body">
+                <span class="limitation-title">Giới hạn Quick Check trên Trình duyệt</span>
+                <p class="limitation-desc">
+                  Một số thông tin thiết bị và kiểm tra phần cứng không thể thực hiện trong Quick Check. Cài MobiCheck để kiểm tra chi tiết hơn.
+                </p>
+                <button class="limitation-link-btn" id="btnBannerDownloadApp">
+                  Tìm hiểu ứng dụng Android MobiCheck (Full Check) &rarr;
+                </button>
+              </div>
+            </div>
+
+            <!-- Cụm nút hành động chính -->
+            <div class="main-actions-group">
+              <button class="btn-primary" id="btnStartAutoCheck">
+                <svg><use href="assets/icons.svg#icon-play"></use></svg>
+                <span>Bắt đầu kiểm tra tự động</span>
+              </button>
+              <button class="btn-secondary" id="btnStartSingleCheck">
+                <svg><use href="assets/icons.svg#icon-check"></use></svg>
+                <span>Kiểm tra từng mục độc lập</span>
+              </button>
+            </div>
+
+            <!-- Tiêu đề mục các bài kiểm tra -->
+            <div class="section-header-row">
+              <span class="section-title">
+                <svg width="18" height="18" style="color: var(--mc-brand);"><use href="assets/icons.svg#icon-check"></use></svg>
+                Hạng mục kiểm tra nhanh
+              </span>
+              <span class="section-counter">12 bài test</span>
+            </div>
+
+            <!-- Lưới các bài kiểm tra Quick Check -->
+            <div class="test-cards-grid" id="homeTestCardsGrid">
+              <!-- Được render tự động từ app.js -->
+            </div>
+
+            <!-- Thông tin chi tiết hệ thống bổ sung -->
+            <div class="section-header-row">
+              <span class="section-title">Thông số phần cứng & Mạng</span>
+            </div>
+            <div class="mc-card specs-list">
+              <div class="spec-item-row">
+                <span class="spec-label">
+                  <svg><use href="assets/icons.svg#icon-display"></use></svg>
+                  Độ phân giải hiển thị
+                </span>
+                <span class="spec-val" id="specDisplayResolution">-- x --</span>
+              </div>
+              <div class="spec-item-row">
+                <span class="spec-label">
+                  <svg><use href="assets/icons.svg#icon-display"></use></svg>
+                  Tần số quét tươi
+                </span>
+                <span class="spec-val" id="specDisplayHz">-- Hz</span>
+              </div>
+              <div class="spec-item-row">
+                <span class="spec-label">
+                  <svg><use href="assets/icons.svg#icon-display"></use></svg>
+                  Mật độ điểm ảnh (DPR)
+                </span>
+                <span class="spec-val" id="specDisplayDpr">--</span>
+              </div>
+              <div class="spec-item-row">
+                <span class="spec-label">
+                  <svg><use href="assets/icons.svg#icon-network"></use></svg>
+                  Mạng kết nối
+                </span>
+                <span class="spec-val" id="specNetworkType">--</span>
+              </div>
+              <div class="spec-item-row">
+                <span class="spec-label">
+                  <svg><use href="assets/icons.svg#icon-network"></use></svg>
+                  Độ trễ phản hồi (RTT)
+                </span>
+                <span class="spec-val" id="specNetworkPing">--</span>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ==================== 2. DANH MỤC BÀI KIỂM TRA (SCREEN TESTS) ==================== -->
+        <section class="app-screen" id="screenTests">
+          <div class="page-content">
+            <div class="section-header-row">
+              <span class="section-title">Chọn hạng mục cần kiểm tra</span>
+            </div>
+            <p style="font-size: 12px; color: var(--mc-dim); margin-top: -6px;">
+              Bấm vào từng bài kiểm tra bên dưới để khởi chạy quy trình đánh giá riêng biệt.
+            </p>
+
+            <div class="test-cards-grid" id="catalogTestCardsGrid">
+              <!-- Rendered via app.js -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== 3. BÁO CÁO KẾT QUẢ (SCREEN REPORT) ==================== -->
+        <section class="app-screen" id="screenReport">
+          <div class="page-content">
+            <!-- Điểm tổng kết và số lượng trạng thái -->
+            <div class="report-score-banner">
+              <span style="font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.9;">
+                Mức độ phản hồi chức năng
+              </span>
+              <div class="report-score-num" id="reportScoreNum">100%</div>
+              <span style="font-size: 11.5px; opacity: 0.95;">
+                Phiên kiểm tra hoàn tất qua Web Quick Check
+              </span>
+
+              <div class="report-summary-counts">
+                <div class="count-card">
+                  <div class="count-card-val" id="reportCountVerified">0</div>
+                  <div class="count-card-lbl">Đã xác nhận</div>
+                </div>
+                <div class="count-card">
+                  <div class="count-card-val" id="reportCountNotConfirmed">0</div>
+                  <div class="count-card-lbl">Chưa xác nhận</div>
+                </div>
+                <div class="count-card">
+                  <div class="count-card-val" id="reportCountNotSupported">0</div>
+                  <div class="count-card-lbl">Giới hạn Web</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Banner nhắc nhở Native -->
+            <div class="limitation-alert-banner">
+              <div class="limitation-icon">
+                <svg><use href="assets/icons.svg#icon-alert"></use></svg>
+              </div>
+              <div class="limitation-body">
+                <span class="limitation-title">Cần kiểm tra phần cứng sâu hơn?</span>
+                <p class="limitation-desc">
+                  Trình duyệt không thể đọc mã IMEI, bo mạch chip, độ chai pin chi tiết. Cài đặt MobiCheck Android để chạy Full Check.
+                </p>
+              </div>
+            </div>
+
+            <!-- Thao tác báo cáo -->
+            <div style="display: flex; gap: 8px;">
+              <button class="btn-secondary" id="btnExportReportText" style="flex: 1;">
+                <svg><use href="assets/icons.svg#icon-check"></use></svg>
+                <span>Sao chép tóm tắt</span>
+              </button>
+              <button class="btn-secondary" id="btnPrintReport" style="flex: 1;">
+                <svg><use href="assets/icons.svg#icon-storage"></use></svg>
+                <span>In / Xuất PDF</span>
+              </button>
+            </div>
+
+            <button class="btn-primary" id="btnRetestAll">
+              <svg><use href="assets/icons.svg#icon-refresh"></use></svg>
+              <span>Kiểm tra lại toàn bộ</span>
+            </button>
+
+            <!-- Danh sách từng hạng mục với mã RS-001 -> RS-007 -->
+            <div class="section-header-row" style="margin-top: 6px;">
+              <span class="section-title">Chi tiết bằng chứng & Hạng mục</span>
+            </div>
+            <div id="reportItemsList" style="display: flex; flex-direction: column; gap: 8px;">
+              <!-- Rendered via app.js -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== 4. GIỚI THIỆU & CÀI APP (SCREEN ABOUT) ==================== -->
+        <section class="app-screen" id="screenAbout">
+          <div class="page-content">
+            <div class="mc-card" style="text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 24px 16px;">
+              <svg width="48" height="48"><use href="assets/icons.svg#icon-logo"></use></svg>
+              <h2 style="font-size: 18px; font-weight: 700; color: var(--mc-brand);">MobiCheck — Quick Check</h2>
+              <span class="badge-pill green">Phiên bản Web 1.0</span>
+              <p style="font-size: 12.5px; color: var(--mc-dim); line-height: 1.45; margin-top: 4px;">
+                Công cụ kiểm định nhanh phần cứng thiết bị di động không cần cài đặt ứng dụng.
+              </p>
+            </div>
+
+            <!-- Bảng so sánh Web Quick Check vs Android Full Check -->
+            <div class="section-header-row">
+              <span class="section-title">So sánh Quick Check & Android App</span>
+            </div>
+
+            <div class="mc-card specs-list">
+              <div class="spec-item-row">
+                <span class="spec-label">Màn hình & Điểm chết</span>
+                <span class="spec-val" style="color: var(--mc-ok);">Cả hai hỗ trợ</span>
+              </div>
+              <div class="spec-item-row">
+                <span class="spec-label">Cảm ứng & Đa điểm chạm</span>
+                <span class="spec-val" style="color: var(--mc-ok);">Cả hai hỗ trợ</span>
+              </div>
+              <div class="spec-item-row">
+                <span class="spec-label">Camera trước / sau & Flash</span>
+                <span class="spec-val" style="color: var(--mc-ok);">Cả hai hỗ trợ</span>
+              </div>
+              <div class="spec-item-row">
+                <span class="spec-label">Microphone & Loa ngoài</span>
+                <span class="spec-val" style="color: var(--mc-ok);">Cả hai hỗ trợ</span>
+              </div>
+              <div class="spec-item-row">
+                <span class="spec-label">Con quay & Gia tốc kế</span>
+                <span class="spec-val" style="color: var(--mc-ok);">Cả hai hỗ trợ</span>
+              </div>
+              <div class="spec-item-row">
+                <span class="spec-label">Đọc mã IMEI & Số Serial</span>
+                <span class="spec-val" style="color: var(--mc-warn);">Chỉ App Android</span>
+              </div>
+              <div class="spec-item-row">
+                <span class="spec-label">Chu kỳ sạc & Độ chai pin sâu</span>
+                <span class="spec-val" style="color: var(--mc-warn);">Chỉ App Android</span>
+              </div>
+              <div class="spec-item-row">
+                <span class="spec-label">Phần cứng bo mạch & Cảm biến sâu</span>
+                <span class="spec-val" style="color: var(--mc-warn);">Chỉ App Android</span>
+              </div>
+            </div>
+
+            <!-- Nút liên kết tải App -->
+            <div class="main-actions-group">
+              <a href="https://play.google.com/store/apps/developer?id=Thanhvanluu" target="_blank" rel="noopener noreferrer" class="btn-primary" style="text-decoration: none;">
+                <svg><use href="assets/icons.svg#icon-play"></use></svg>
+                <span>Mở Google Play Store</span>
+              </a>
+            </div>
+
+            <div style="text-align: center; font-size: 11px; color: var(--mc-dim); padding: 12px 0;">
+              Phát triển bởi Thanhvanluu • Bản quyền MobiCheck © 2026
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- Bottom Navigation Bar -->
+      <nav class="bottom-nav">
+        <button class="nav-item active" data-screen="screenHome">
+          <svg><use href="assets/icons.svg#icon-device-mockup"></use></svg>
+          <span>Trang chủ</span>
+        </button>
+        <button class="nav-item" data-screen="screenTests">
+          <svg><use href="assets/icons.svg#icon-check"></use></svg>
+          <span>Kiểm tra</span>
+        </button>
+        <button class="nav-item" data-screen="screenReport">
+          <svg><use href="assets/icons.svg#icon-storage"></use></svg>
+          <span>Báo cáo</span>
+        </button>
+        <button class="nav-item" data-screen="screenAbout">
+          <svg><use href="assets/icons.svg#icon-chip"></use></svg>
+          <span>Cài App</span>
+        </button>
+      </nav>
+
+      <!-- Menu Ngăn Kéo (Side Drawer) -->
+      <div class="drawer-backdrop" id="drawerBackdrop">
+        <aside class="drawer-menu">
+          <div class="drawer-header">
+            <div class="brand-badge-group">
+              <svg width="24" height="24"><use href="assets/icons.svg#icon-logo"></use></svg>
+              <span class="brand-title">MobiCheck</span>
+            </div>
+            <button class="icon-button" id="btnCloseDrawer" aria-label="Đóng menu">
+              <svg><use href="assets/icons.svg#icon-close"></use></svg>
+            </button>
+          </div>
+
+          <div class="drawer-body">
+            <a href="#" class="drawer-link" data-screen="screenHome">
+              <svg><use href="assets/icons.svg#icon-device-mockup"></use></svg>
+              <span>Trang chủ Quick Check</span>
+            </a>
+            <a href="#" class="drawer-link" data-screen="screenTests">
+              <svg><use href="assets/icons.svg#icon-check"></use></svg>
+              <span>Danh mục bài kiểm tra</span>
+            </a>
+            <a href="#" class="drawer-link" data-screen="screenReport">
+              <svg><use href="assets/icons.svg#icon-storage"></use></svg>
+              <span>Báo cáo kết quả</span>
+            </a>
+            <a href="#" class="drawer-link" data-screen="screenAbout">
+              <svg><use href="assets/icons.svg#icon-chip"></use></svg>
+              <span>So sánh & Cài App Android</span>
+              <span class="drawer-link-badge">Full Check</span>
+            </a>
+          </div>
+
+          <div class="drawer-footer">
+            <div class="drawer-app-promo-card">
+              <span class="drawer-promo-title">MobiCheck Android Native</span>
+              <p class="drawer-promo-sub">
+                Đọc IMEI, bo mạch, kiểm tra chu kỳ sạc pin và đối chiếu linh kiện chính xác 100%.
+              </p>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <!-- ==================== MODALS KIỂM TRA TƯƠNG TÁC ==================== -->
+
+      <!-- MODAL 1: MÀN HÌNH & ĐIỂM CHẾT -->
+      <div class="test-modal-overlay" id="modalDisplayTest">
+        <header class="modal-header">
+          <div class="modal-title-group">
+            <span class="modal-title">Kiểm tra Màn hình</span>
+            <span class="modal-subtitle">Chạm để đổi màu quan sát điểm chết</span>
+          </div>
+        </header>
+        <div class="modal-body" id="displayTestContainer"></div>
+        <footer class="modal-footer">
+          <button class="btn-half btn-fail-pill" id="btnDisplayFail">
+            <svg width="16" height="16"><use href="assets/icons.svg#icon-alert"></use></svg>
+            <span>Có đốm / Điểm chết</span>
+          </button>
+          <button class="btn-half btn-pass-pill" id="btnDisplayPass">
+            <svg width="16" height="16"><use href="assets/icons.svg#icon-check"></use></svg>
+            <span>Màn hình tốt</span>
+          </button>
+        </footer>
+      </div>
+
+      <!-- MODAL 2: CẢM ỨNG MA TRẬN & ĐA ĐIỂM -->
+      <div class="test-modal-overlay" id="modalTouchTest">
+        <header class="modal-header">
+          <div class="modal-title-group">
+            <span class="modal-title">Kiểm tra Cảm ứng</span>
+            <span class="modal-subtitle">Dùng ngón tay quét phủ kín toàn bộ ô</span>
+          </div>
+        </header>
+        <div class="modal-body" id="touchCanvasContainer" style="padding: 0;"></div>
+        <footer class="modal-footer">
+          <button class="btn-half btn-fail-pill" id="btnTouchFail">
+            <span>Chưa đạt / Bị đứt đoạn</span>
+          </button>
+          <button class="btn-half btn-pass-pill" id="btnTouchPass">
+            <span>Hoàn thành cảm ứng</span>
+          </button>
+        </footer>
+      </div>
+
+      <!-- MODAL 3: LOA NGOÀI -->
+      <div class="test-modal-overlay" id="modalSpeakerTest">
+        <header class="modal-header">
+          <div class="modal-title-group">
+            <span class="modal-title">Kiểm tra Loa ngoài</span>
+            <span class="modal-subtitle">Lắng nghe âm thanh phát từ loa thiết bị</span>
+          </div>
+        </header>
+        <div class="modal-body speaker-test-container">
+          <div class="speaker-animated-waves">
+            <div class="speaker-pulse-ring"></div>
+            <svg><use href="assets/icons.svg#icon-speaker"></use></svg>
+          </div>
+          <p style="text-align: center; font-size: 13px; color: var(--mc-dim); max-width: 280px;">
+            Hãy bật âm lượng thiết bị và bấm các nút bên dưới để phát âm báo kiểm tra.
+          </p>
+          <div style="display: flex; gap: 8px; width: 100%; max-width: 320px;">
+            <button class="btn-secondary" id="btnPlaySpeaker440" style="flex: 1;">
+              Phát âm 440 Hz
+            </button>
+            <button class="btn-secondary" id="btnPlaySpeaker1000" style="flex: 1;">
+              Phát âm 1000 Hz
+            </button>
+          </div>
+        </div>
+        <footer class="modal-footer">
+          <button class="btn-half btn-fail-pill" id="btnSpeakerFail">
+            <span>Không nghe thấy</span>
+          </button>
+          <button class="btn-half btn-pass-pill" id="btnSpeakerPass">
+            <span>Nghe rõ ràng</span>
+          </button>
+        </footer>
+      </div>
+
+      <!-- MODAL 4: MICROPHONE -->
+      <div class="test-modal-overlay" id="modalMicTest">
+        <header class="modal-header">
+          <div class="modal-title-group">
+            <span class="modal-title">Kiểm tra Microphone</span>
+            <span class="modal-subtitle">Nói vào mic và quan sát phổ sóng âm</span>
+          </div>
+        </header>
+        <div class="modal-body mic-test-container">
+          <div class="waveform-canvas-box">
+            <canvas id="micWaveformCanvas"></canvas>
+          </div>
+
+          <div class="db-meter-container">
+            <div class="db-meter-header">
+              <span>Cường độ tín hiệu</span>
+              <span id="micDbValueText">-- dB</span>
+            </div>
+            <div class="db-meter-track">
+              <div class="db-meter-fill" id="micDbMeterFill"></div>
+            </div>
+          </div>
+
+          <div class="mic-action-card">
+            <span style="font-size: 12px; font-weight: 700; color: var(--mc-fg);">Ghi âm & Tự nghe lại</span>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn-secondary" id="btnStartMicRecord" style="flex: 1;">Ghi âm thử (3s)</button>
+              <button class="btn-secondary" id="btnPlayMicRecording" style="flex: 1; display: none;">Nghe lại giọng</button>
+            </div>
+          </div>
+        </div>
+        <footer class="modal-footer">
+          <button class="btn-half btn-fail-pill" id="btnMicFail">
+            <span>Không thu được âm</span>
+          </button>
+          <button class="btn-half btn-pass-pill" id="btnMicPass">
+            <span>Micro thu tốt</span>
+          </button>
+        </footer>
+      </div>
+
+      <!-- MODAL 5: CAMERA -->
+      <div class="test-modal-overlay" id="modalCameraTest">
+        <header class="modal-header">
+          <div class="modal-title-group">
+            <span class="modal-title">Kiểm tra Camera</span>
+            <span class="modal-subtitle">Quan sát luồng video trực tiếp</span>
+          </div>
+        </header>
+        <div class="modal-body camera-view-container">
+          <video id="cameraVideoPreview" autoplay playsinline muted></video>
+          <img id="cameraCapturedSnapshot" alt="Ảnh chụp thử">
+          <div class="camera-hud-badge" id="cameraResolutionBadge">1920 x 1080</div>
+
+          <div class="camera-controls-floating">
+            <button class="camera-round-btn" id="btnFlipCamera" aria-label="Đổi camera">
+              <svg width="22" height="22"><use href="assets/icons.svg#icon-refresh"></use></svg>
+            </button>
+            <button class="camera-shutter-btn" id="btnCameraShutter" aria-label="Chụp thử"></button>
+            <button class="camera-round-btn" id="btnToggleTorch" aria-label="Bật flash">
+              <svg width="22" height="22"><use href="assets/icons.svg#icon-sensor"></use></svg>
+            </button>
+          </div>
+        </div>
+        <footer class="modal-footer">
+          <button class="btn-half btn-fail-pill" id="btnCameraFail">
+            <span>Camera lỗi / Mờ</span>
+          </button>
+          <button class="btn-half btn-pass-pill" id="btnCameraPass">
+            <span>Camera sắc nét</span>
+          </button>
+        </footer>
+      </div>
+
+      <!-- MODAL 6: GIA TỐC & CON QUAY HỒI CHUYỂN -->
+      <div class="test-modal-overlay" id="modalMotionTest">
+        <header class="modal-header">
+          <div class="modal-title-group">
+            <span class="modal-title">Kiểm tra Chuyển động 3D</span>
+            <span class="modal-subtitle">Nghiêng điện thoại để di chuyển bọt nước</span>
+          </div>
+        </header>
+        <div class="modal-body motion-test-container">
+          <div class="bubble-level-frame">
+            <div class="crosshair-h"></div>
+            <div class="crosshair-v"></div>
+            <div class="bullseye-center"></div>
+            <div class="bubble-ball" id="motionBubbleBall"></div>
+          </div>
+
+          <div class="motion-stats-grid">
+            <div class="motion-stat-box">
+              <div class="motion-stat-label">Pitch (X)</div>
+              <div class="motion-stat-val" id="motionValBeta">0°</div>
+            </div>
+            <div class="motion-stat-box">
+              <div class="motion-stat-label">Roll (Y)</div>
+              <div class="motion-stat-val" id="motionValGamma">0°</div>
+            </div>
+            <div class="motion-stat-box">
+              <div class="motion-stat-label">Gia tốc</div>
+              <div class="motion-stat-val" id="motionValAccel">9.8 m/s²</div>
+            </div>
+          </div>
+
+          <p style="font-size: 12px; color: var(--mc-dim); text-align: center; max-width: 290px;">
+            Hãy nhấc máy lên và nghiêng theo các hướng để đưa bọt nước vào hồng tâm cân bằng.
+          </p>
+        </div>
+        <footer class="modal-footer">
+          <button class="btn-half btn-fail-pill" id="btnMotionFail">
+            <span>Không phản hồi</span>
+          </button>
+          <button class="btn-half btn-pass-pill" id="btnMotionPass">
+            <span>Cảm biến nhạy</span>
+          </button>
+        </footer>
+      </div>
+
+      <!-- MODAL 7: TIẾN TRÌNH KIỂM TRA TỰ ĐỘNG -->
+      <div class="test-modal-overlay" id="modalRunner">
+        <header class="modal-header">
+          <div class="modal-title-group">
+            <span class="modal-title">Tiến trình Quick Check</span>
+            <span class="modal-subtitle">Đang tự động điều phối các kịch bản</span>
+          </div>
+        </header>
+        <div class="modal-body runner-view-container">
+          <div class="runner-progress-card">
+            <div class="runner-header-flex">
+              <span style="font-size: 13.5px; font-weight: 700; color: var(--mc-fg);" id="runnerActiveStageName">Khởi động...</span>
+              <span class="runner-percent" id="runnerPercent">0%</span>
+            </div>
+            <div class="runner-bar-track">
+              <div class="runner-bar-fill" id="runnerProgressBar"></div>
+            </div>
+          </div>
+          <p style="font-size: 12px; color: var(--mc-dim); line-height: 1.4;">
+            Hệ thống đang chạy tuần tự các bài kiểm tra phần cứng khả dụng trên trình duyệt web mà không gây xung đột tài nguyên.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
