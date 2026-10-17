@@ -149,6 +149,12 @@ class MobiCheckApp {
         this.switchScreen('screenAbout');
       });
     }
+    const btnHeaderDownload = document.getElementById('btnHeaderDownloadApp');
+    if (btnHeaderDownload) {
+      btnHeaderDownload.addEventListener('click', () => {
+        this.switchScreen('screenAbout');
+      });
+    }
     if (btnExploreTests) {
       btnExploreTests.addEventListener('click', () => {
         this.switchScreen('screenTests');
