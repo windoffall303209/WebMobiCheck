@@ -1,0 +1,235 @@
+/* ==========================================================================
+   MobiCheck Web - Design System Tokens & Base Styles
+   Tuân thủ nghiêm ngặt bộ màu và quy chuẩn Figma từ Android MobiCheck
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap');
+
+:root {
+  /* Canvas & Surface */
+  --mc-ink: #F5F6F1;
+  --mc-panel: #FFFFFF;
+  --mc-panel2: #EEF0E9;
+  --mc-line: #E1E4DB;
+  --mc-dim: #5F6873;
+  --mc-fg: #12161B;
+  
+  /* MobiCheck Brand Signal */
+  --mc-brand: #157335;
+  --mc-brand-dark: #0D5023;
+  --mc-signal: #5DA653;
+  --mc-onsignal: #FFFFFF;
+  --mc-accent: #4F9654;
+  --mc-lime: #C4F03A;
+  --mc-lime-text: #12161B;
+
+  /* Status Colors (Quy chuẩn RS-001 -> RS-007) */
+  --mc-ok: #059669;
+  --mc-ok-bg: #ECFDF5;
+  --mc-ok-border: #A7F3D0;
+
+  --mc-warn: #C2710C;
+  --mc-warn-bg: #FEF3C7;
+  --mc-warn-border: #FDE68A;
+
+  --mc-na: #6B7280;
+  --mc-na-bg: #F3F4F6;
+  --mc-na-border: #E5E7EB;
+
+  --mc-user: #2563EB;
+  --mc-user-bg: #EFF6FF;
+  --mc-user-border: #BFDBFE;
+
+  --mc-bad: #DC2626;
+  --mc-bad-bg: #FEF2F2;
+  --mc-bad-border: #FECACA;
+
+  /* Typography */
+  --font-main: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', Consolas, Monaco, monospace;
+
+  /* Shadows & Radius */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  --shadow-sm: 0 1px 3px rgba(18, 22, 27, 0.05);
+  --shadow-card: 0 2px 8px rgba(18, 22, 27, 0.06), 0 1px 2px rgba(18, 22, 27, 0.04);
+  --shadow-float: 0 12px 32px rgba(18, 22, 27, 0.12), 0 4px 12px rgba(18, 22, 27, 0.06);
+
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 240ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Base reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background-color: #EAECE6;
+  color: var(--mc-fg);
+  font-family: var(--font-main);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+}
+
+/* Viewport frame container for high fidelity mobile preview on desktop & native on phone */
+#app-root {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.device-frame {
+  width: 100%;
+  max-width: 460px;
+  height: 100%;
+  max-height: 100vh;
+  background-color: var(--mc-ink);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.15);
+}
+
+@media (min-width: 768px) {
+  .device-frame {
+    height: 94vh;
+    border-radius: 32px;
+    border: 8px solid #1E293B;
+    box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.35);
+  }
+}
+
+/* Header & Screens Container */
+.screen-container {
+  flex: 1;
+  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* Custom minimal scrollbar */
+.screen-container::-webkit-scrollbar {
+  width: 5px;
+}
+.screen-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+.screen-container::-webkit-scrollbar-thumb {
+  background: var(--mc-line);
+  border-radius: 4px;
+}
+
+/* Screen views */
+.app-screen {
+  display: none;
+  min-height: 100%;
+  padding-bottom: 84px; /* Space for bottom nav */
+  animation: fadeIn var(--transition-fast) ease-out;
+}
+.app-screen.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Top App Bar */
+.top-header {
+  height: 56px;
+  background-color: var(--mc-panel);
+  border-bottom: 1px solid var(--mc-line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.brand-badge-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-logo-icon {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-text-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--mc-brand);
+  letter-spacing: -0.3px;
+  line-height: 1.1;
+}
+
+.brand-subtitle-tag {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--mc-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon-button {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-full);
+  border: none;
+  background: transparent;
+  color: var(--mc-brand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.icon-button:hover, .icon-button:active {
+  background-color: var(--mc-panel2);
+}
+
+.icon-button svg {
+  width: 22px;
+  height: 22px;
+}
