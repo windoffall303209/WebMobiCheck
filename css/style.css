@@ -90,17 +90,18 @@ html, body {
 #app-root {
   width: 100%;
   height: 100%;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
-  background-color: var(--mc-ink);
+  background-color: #EAECE6;
 }
 
-/* Base Device Frame: 100% natural on mobile */
+/* Base Device Frame: Tự động co giãn theo màn hình */
 .device-frame {
   width: 100%;
-  max-width: 100%;
+  max-width: 500px;
   height: 100%;
   max-height: 100vh;
   background-color: var(--mc-ink);
@@ -108,42 +109,29 @@ html, body {
   flex-direction: column;
   position: relative;
   overflow: hidden;
-  box-shadow: none;
-  transition: max-width var(--transition-normal), height var(--transition-normal), border-radius var(--transition-normal), box-shadow var(--transition-normal);
+  box-shadow: 0 4px 25px rgba(18, 22, 27, 0.08);
 }
 
-/* Tablet: expanded fluid container */
+@media (max-width: 500px) {
+  .device-frame {
+    max-width: 100%;
+    height: 100vh;
+    box-shadow: none;
+  }
+}
+
 @media (min-width: 768px) {
   #app-root {
     background: radial-gradient(circle at 50% 0%, #F5F7F2 0%, #E2E6DE 100%);
     padding: 16px;
   }
   .device-frame {
-    max-width: 920px;
-    height: 96vh;
+    max-width: 500px;
+    height: calc(100vh - 32px);
     border-radius: var(--radius-xl);
     border: 1px solid var(--mc-line);
-    box-shadow: 0 16px 40px rgba(18, 22, 27, 0.08);
+    box-shadow: 0 16px 40px rgba(18, 22, 27, 0.1);
   }
-}
-
-/* Desktop: spacious modern dashboard */
-@media (min-width: 1024px) {
-  .device-frame {
-    max-width: 1140px;
-    height: 94vh;
-    border-radius: 24px;
-    box-shadow: 0 20px 50px rgba(18, 22, 27, 0.1);
-  }
-}
-
-/* Chế độ giả lập điện thoại trên máy tính (Phone Simulation Mode) */
-.device-frame.mode-phone-sim {
-  max-width: 440px !important;
-  height: 92vh !important;
-  border-radius: 36px !important;
-  border: 10px solid #1E293B !important;
-  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.35) !important;
 }
 
 /* Header & Screens Container */
@@ -262,77 +250,36 @@ html, body {
   height: 22px;
 }
 
-/* Header Nav Tabs (Dành cho màn hình Tablet & Desktop) */
-.header-nav-tabs {
-  display: none;
+/* Sub Header cho các màn hình con (Hardware Detail, v.v.) */
+.screen-sub-header {
+  height: 56px;
+  background-color: var(--mc-panel);
+  border-bottom: 1px solid var(--mc-line);
+  display: flex;
   align-items: center;
-  gap: 6px;
-  margin: 0 16px;
+  padding: 0 12px;
+  gap: 8px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 40;
 }
 
-.header-tab-btn {
-  background: transparent;
-  border: none;
-  padding: 6px 14px;
-  border-radius: var(--radius-full);
-  font-size: 13px;
-  font-weight: 600;
+.sub-header-title-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.sub-header-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--mc-fg);
+  line-height: 1.2;
+}
+
+.sub-header-desc {
+  font-size: 11px;
   color: var(--mc-dim);
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  white-space: nowrap;
-}
-
-.header-tab-btn:hover {
-  background-color: var(--mc-panel2);
-  color: var(--mc-fg);
-}
-
-.header-tab-btn.active {
-  background-color: var(--mc-ok-bg);
-  color: var(--mc-brand);
-}
-
-/* Nút chuyển đổi chế độ xem Desktop / Phone Simulator */
-.view-mode-pill-btn {
-  display: none;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  border-radius: var(--radius-full);
-  background-color: var(--mc-panel2);
-  border: 1px solid var(--mc-line);
-  color: var(--mc-fg);
-  font-size: 11.5px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-}
-
-.view-mode-pill-btn:hover {
-  background-color: #E2E6DE;
-  border-color: #CBD5E1;
-}
-
-.view-mode-pill-btn svg {
-  width: 15px;
-  height: 15px;
-  color: var(--mc-brand);
-}
-
-@media (min-width: 768px) {
-  .header-nav-tabs {
-    display: flex;
-  }
-  .view-mode-pill-btn {
-    display: inline-flex;
-  }
-}
-
-/* Khi đang ở chế độ giả lập điện thoại, ẩn header nav tabs để tập trung vào phone view */
-.mode-phone-sim .header-nav-tabs,
-.mode-phone-sim .desktop-only {
-  display: none !important;
 }
 
 /* Tinh chỉnh cho màn hình siêu nhỏ (< 360px) */

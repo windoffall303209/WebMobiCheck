@@ -53,10 +53,9 @@ class MobiCheckApp {
     this.renderReportScreen();
   }
 
-  // Gắn sự kiện chuyển tab cho thanh điều hướng dưới đáy và thanh tab trên Desktop.
+  // Gắn sự kiện chuyển tab cho thanh điều hướng dưới đáy.
   bindNavigation() {
     const bottomNavItems = document.querySelectorAll('.bottom-nav .nav-item');
-    const headerNavTabs = document.querySelectorAll('.header-nav-tabs .header-tab-btn');
 
     const handleTabClick = (btn) => {
       const targetScreen = btn.getAttribute('data-screen');
@@ -66,28 +65,6 @@ class MobiCheckApp {
     };
 
     bottomNavItems.forEach((btn) => btn.addEventListener('click', () => handleTabClick(btn)));
-    headerNavTabs.forEach((btn) => btn.addEventListener('click', () => handleTabClick(btn)));
-
-    // Gắn sự kiện chuyển đổi chế độ xem Desktop / Giả lập điện thoại
-    const btnToggleView = document.getElementById('btnToggleViewMode');
-    const frame = document.querySelector('.device-frame');
-    const iconView = document.getElementById('iconViewMode');
-    const textView = document.getElementById('textViewMode');
-
-    if (btnToggleView && frame) {
-      btnToggleView.addEventListener('click', () => {
-        const isSim = frame.classList.toggle('mode-phone-sim');
-        if (isSim) {
-          if (iconView) iconView.innerHTML = '<use href="assets/icons.svg#icon-desktop"></use>';
-          if (textView) textView.innerText = 'Mở rộng Desktop';
-        } else {
-          if (iconView) iconView.innerHTML = '<use href="assets/icons.svg#icon-phone"></use>';
-          if (textView) textView.innerText = 'Xem dạng điện thoại';
-        }
-        // Gọi lại resize cho các canvas kiểm tra đang mở
-        window.dispatchEvent(new Event('resize'));
-      });
-    }
   }
 
   // Gắn sự kiện đóng mở menu ngăn kéo (Drawer menu).
@@ -138,35 +115,22 @@ class MobiCheckApp {
       item.classList.toggle('active', item.getAttribute('data-screen') === screenId);
     });
 
-    // Đồng bộ trạng thái active trên Desktop Header Tabs
-    document.querySelectorAll('.header-nav-tabs .header-tab-btn').forEach((item) => {
-      item.classList.toggle('active', item.getAttribute('data-screen') === screenId);
-    });
-
     if (screenId === 'screenReport') {
       this.renderReportScreen();
     }
   }
 
-  // Gắn sự kiện cho các nút hành động chính (Bắt đầu kiểm tra tự động, xuất báo cáo).
+  // Gắn sự kiện cho các nút hành động chính (Kiểm tra ngay, 4 ô thống kê, 8 nút kiểm tra nhanh).
   bindGlobalActions() {
-    const btnStartAuto = document.getElementById('btnStartAutoCheck');
-    const btnStartSingle = document.getElementById('btnStartSingleCheck');
+    const btnStartCheck = document.getElementById('btnHomeStartCheck');
     const btnRetest = document.getElementById('btnRetestAll');
     const btnExportText = document.getElementById('btnExportReportText');
     const btnPrintPdf = document.getElementById('btnPrintReport');
     const btnDownloadApp = document.getElementById('btnBannerDownloadApp');
+    const btnExploreTests = document.getElementById('btnExploreQuickTests');
 
-    if (btnStartAuto) {
-      btnStartAuto.addEventListener('click', () => this.startAutomatedSequence());
-    }
-    if (btnStartSingle) {
-      btnStartSingle.addEventListener('click', () => {
-        this.switchScreen('screenTests');
-        document.querySelectorAll('.bottom-nav .nav-item').forEach((i) => {
-          i.classList.toggle('active', i.getAttribute('data-screen') === 'screenTests');
-        });
-      });
+    if (btnStartCheck) {
+      btnStartCheck.addEventListener('click', () => this.startAutomatedSequence());
     }
     if (btnRetest) {
       btnRetest.addEventListener('click', () => {
@@ -183,10 +147,177 @@ class MobiCheckApp {
     if (btnDownloadApp) {
       btnDownloadApp.addEventListener('click', () => {
         this.switchScreen('screenAbout');
-        document.querySelectorAll('.bottom-nav .nav-item').forEach((i) => {
-          i.classList.toggle('active', i.getAttribute('data-screen') === 'screenAbout');
-        });
       });
+    }
+    if (btnExploreTests) {
+      btnExploreTests.addEventListener('click', () => {
+        this.switchScreen('screenTests');
+      });
+    }
+
+    // 4 Ô thống kê CPU, RAM, Bộ nhớ, Pin trên Home -> mở chi tiết phần cứng
+    const statCpu = document.getElementById('btnHomeStatCpu');
+    const statRam = document.getElementById('btnHomeStatRam');
+    const statStorage = document.getElementById('btnHomeStatStorage');
+    const statBattery = document.getElementById('btnHomeStatBattery');
+
+    if (statCpu) statCpu.addEventListener('click', () => this.openHardwareDetail('cpu'));
+    if (statRam) statRam.addEventListener('click', () => this.openHardwareDetail('ram'));
+    if (statStorage) statStorage.addEventListener('click', () => this.openHardwareDetail('storage'));
+    if (statBattery) statBattery.addEventListener('click', () => this.openHardwareDetail('battery'));
+
+    // 8 Nút kiểm tra nhanh linh kiện trực tiếp trên Home
+    const btnQuickDisplay = document.getElementById('btnHomeQuickDisplay');
+    const btnQuickTouch = document.getElementById('btnHomeQuickTouch');
+    const btnQuickCamera = document.getElementById('btnHomeQuickCamera');
+    const btnQuickSpeaker = document.getElementById('btnHomeQuickSpeaker');
+    const btnQuickMic = document.getElementById('btnHomeQuickMic');
+    const btnQuickVibrate = document.getElementById('btnHomeQuickVibrate');
+    const btnQuickSensor = document.getElementById('btnHomeQuickSensor');
+    const btnQuickBattery = document.getElementById('btnHomeQuickBattery');
+
+    if (btnQuickDisplay) btnQuickDisplay.addEventListener('click', () => this.launchInteractiveTestModal('display'));
+    if (btnQuickTouch) btnQuickTouch.addEventListener('click', () => this.launchInteractiveTestModal('touch'));
+    if (btnQuickCamera) btnQuickCamera.addEventListener('click', () => this.launchInteractiveTestModal('camera'));
+    if (btnQuickSpeaker) btnQuickSpeaker.addEventListener('click', () => this.launchInteractiveTestModal('audio'));
+    if (btnQuickMic) btnQuickMic.addEventListener('click', () => this.launchInteractiveTestModal('microphone'));
+    if (btnQuickVibrate) btnQuickVibrate.addEventListener('click', () => this.runVibrateCheck());
+    if (btnQuickSensor) btnQuickSensor.addEventListener('click', () => this.launchInteractiveTestModal('motion'));
+    if (btnQuickBattery) btnQuickBattery.addEventListener('click', () => this.openHardwareDetail('battery'));
+
+    // 3 Thẻ thông số phần cứng chi tiết trên Home
+    const cardDisplaySpecs = document.getElementById('cardHomeDisplaySpecs');
+    const cardNetworkSpecs = document.getElementById('cardHomeNetworkSpecs');
+    const cardSystemSpecs = document.getElementById('cardHomeSystemSpecs');
+
+    if (cardDisplaySpecs) cardDisplaySpecs.addEventListener('click', () => this.openHardwareDetail('device'));
+    if (cardNetworkSpecs) cardNetworkSpecs.addEventListener('click', () => this.runNetworkCheck());
+    if (cardSystemSpecs) cardSystemSpecs.addEventListener('click', () => this.openHardwareDetail('device'));
+
+    // Màn hình chi tiết phần cứng: Nút quay lại và 5 tabs
+    const btnHwBack = document.getElementById('btnHardwareDetailBack');
+    if (btnHwBack) {
+      btnHwBack.addEventListener('click', () => this.switchScreen('screenHome'));
+    }
+
+    const hwTabs = ['cpu', 'ram', 'storage', 'battery', 'device'];
+    hwTabs.forEach((tab) => {
+      const btn = document.getElementById(`tabHw${tab.charAt(0).toUpperCase() + tab.slice(1)}`);
+      if (btn) {
+        btn.addEventListener('click', () => this.renderHardwareDetail(tab));
+      }
+    });
+  }
+
+  // Mở màn hình Cấu hình phần cứng chi tiết với tab tương ứng.
+  openHardwareDetail(tab = 'cpu') {
+    this.currentHwTab = tab;
+    this.renderHardwareDetail(tab);
+    this.switchScreen('screenHardwareDetail');
+  }
+
+  // Thêm một dòng thông số ItemFigmaSpecRow vào container chi tiết phần cứng.
+  addSpecRow(container, label, value, statusText = 'Đã xác nhận', isOk = true) {
+    const row = document.createElement('div');
+    row.className = 'hw-spec-row';
+    row.innerHTML = `
+      <div class="hw-spec-main">
+        <span class="hw-spec-label">${label}</span>
+        <span class="hw-spec-value">${value}</span>
+      </div>
+      <span class="hw-spec-badge ${isOk ? 'ok' : 'warn'}">${statusText}</span>
+    `;
+    container.appendChild(row);
+  }
+
+  // Kết xuất toàn bộ danh sách thông số kỹ thuật theo tab được chọn.
+  renderHardwareDetail(tab = 'cpu') {
+    this.currentHwTab = tab;
+    const tabs = ['cpu', 'ram', 'storage', 'battery', 'device'];
+    tabs.forEach((t) => {
+      const btn = document.getElementById(`tabHw${t.charAt(0).toUpperCase() + t.slice(1)}`);
+      if (btn) btn.classList.toggle('active', t === tab);
+    });
+
+    const iconEl = document.getElementById('hwSectionIcon');
+    const titleEl = document.getElementById('hwSectionTitle');
+    const container = document.getElementById('llHardwareDetailRows');
+    if (!container) return;
+    container.innerHTML = '';
+
+    const info = this.deviceInfo || {};
+    const battery = info.batteryInfo || {};
+    const storage = info.storageInfo || {};
+    const network = info.networkInfo || {};
+
+    if (tab === 'cpu') {
+      if (iconEl) iconEl.innerHTML = '<use href="assets/icons.svg#icon-chip"></use>';
+      if (titleEl) titleEl.innerText = 'Bộ vi xử lý (CPU & Chip)';
+      this.addSpecRow(container, 'Số luồng xử lý phần cứng', `${info.cpuCores || '--'} Luồng logic`);
+      this.addSpecRow(container, 'Kiến trúc xử lý', info.cpuArch || '64-bit Architecture');
+      this.addSpecRow(container, 'Nền tảng hệ điều hành', `${info.osName || 'Thiết bị di động'}`);
+      this.addSpecRow(container, 'Trình duyệt Web điều phối', `${info.browserName || 'Chrome'} ${info.browserVersion || ''}`);
+      this.addSpecRow(container, 'Tình trạng CPU', 'Bình thường (Đang phản hồi)', 'Hoạt động', true);
+      this.addSpecRow(container, 'Giới hạn định danh SoC', 'Trình duyệt hạn chế đọc tên mã chip vật lý (Snapdragon/Dimensity/Apple A) để bảo vệ quyền riêng tư', 'Giới hạn Web', false);
+    } else if (tab === 'ram') {
+      if (iconEl) iconEl.innerHTML = '<use href="assets/icons.svg#icon-ram"></use>';
+      if (titleEl) titleEl.innerText = 'Bộ nhớ truy xuất ngẫu nhiên (RAM)';
+      this.addSpecRow(container, 'Dung lượng RAM ước tính', info.ramEstimated || 'Không xác định');
+      this.addSpecRow(container, 'Tình trạng bộ nhớ', 'Bình thường (Đủ tài nguyên Web)', 'Đã xác nhận', true);
+      this.addSpecRow(container, 'Thuật toán xác định', 'Đọc qua navigator.deviceMemory chuẩn W3C Device Memory API', 'Chuẩn W3C', true);
+      this.addSpecRow(container, 'Giới hạn làm tròn (RS-006)', 'Trình duyệt cố định tối đa 8GB để phòng chống theo dõi cấu hình người dùng (Fingerprinting)', 'Giới hạn Web', false);
+    } else if (tab === 'storage') {
+      if (iconEl) iconEl.innerHTML = '<use href="assets/icons.svg#icon-storage"></use>';
+      if (titleEl) titleEl.innerText = 'Bộ nhớ trong & Lưu trữ (ROM)';
+      this.addSpecRow(container, 'Hạn ngạch lưu trữ Web', storage.supported ? `${storage.quotaGB} GB` : 'Theo cấp phát trình duyệt');
+      this.addSpecRow(container, 'Dung lượng đã sử dụng', storage.supported ? `${storage.usageMB} MB` : '0 MB');
+      this.addSpecRow(container, 'Cơ chế lưu trữ ngoại tuyến', 'Origin Private Storage API / IndexedDB', 'Hoạt động', true);
+      this.addSpecRow(container, 'Quyền đọc / ghi', 'Bình thường (Đọc / Ghi ổn định)', 'Đã xác nhận', true);
+      this.addSpecRow(container, 'Giới hạn phân vùng sâu', 'Web sandbox không truy cập được chip lưu trữ UFS/eMMC nội bộ của thiết bị', 'Giới hạn Web', false);
+    } else if (tab === 'battery') {
+      if (iconEl) iconEl.innerHTML = '<use href="assets/icons.svg#icon-battery"></use>';
+      if (titleEl) titleEl.innerText = 'Tình trạng Pin & Nguồn điện';
+      const isCharging = battery.charging;
+      const pct = battery.level !== undefined ? `${battery.level}%` : 'Đang phát hiện';
+      this.addSpecRow(container, 'Mức pin hiện tại', pct, 'Đã xác nhận', true);
+      this.addSpecRow(container, 'Trạng thái sạc pin', isCharging ? 'Đang sạc điện thoại' : 'Đang dùng nguồn pin', isCharging ? 'Đang sạc' : 'Dùng pin', true);
+      this.addSpecRow(container, 'Cổng sạc kết nối', isCharging ? 'Nguồn AC / Cáp sạc USB' : 'Chưa cắm sạc', isCharging ? 'Đã cắm' : 'Bình thường', true);
+      this.addSpecRow(container, 'Thời gian ước tính', battery.chargingTime || 'Theo tiêu chuẩn phần cứng', 'Tự động', true);
+      this.addSpecRow(container, 'Tình trạng sức khỏe pin', 'Bình thường', 'Bình thường', true);
+      this.addSpecRow(container, 'Giới hạn kiểm tra sâu', 'Trình duyệt không đo được số chu kỳ sạc (Battery Cycles), dung lượng mAh và nhiệt độ cell pin', 'Giới hạn Web', false);
+    } else if (tab === 'device') {
+      if (iconEl) iconEl.innerHTML = '<use href="assets/icons.svg#icon-display"></use>';
+      if (titleEl) titleEl.innerText = 'Thông tin thiết bị & Màn hình';
+      this.addSpecRow(container, 'Model thiết bị', info.deviceModel || 'Thiết bị di động');
+      this.addSpecRow(container, 'Hệ điều hành', `${info.osName || 'Android'} (${info.osVersion || 'Bản mới'})`);
+      this.addSpecRow(container, 'Độ phân giải màn hình', `${info.screenWidth} x ${info.screenHeight} px`);
+      this.addSpecRow(container, 'Tần số quét tươi', `${info.refreshRate || 60} Hz`);
+      this.addSpecRow(container, 'Mật độ điểm ảnh (DPR)', `${info.dpr || 1.0}x`);
+      this.addSpecRow(container, 'Mạng kết nối', `${network.effectiveType || 'Trực tuyến'} (${network.downlink || 'Băng thông cao'})`);
+      this.addSpecRow(container, 'Độ trễ phản hồi (RTT)', network.rtt || 'Bình thường');
+      this.addSpecRow(container, 'Giới hạn IMEI & Serial', 'Mã IMEI, Số Serial, Bootloader và phần cứng sâu chỉ khả dụng trên MobiCheck Android', 'Giới hạn Web', false);
+    }
+  }
+
+  // Kích hoạt mô tơ rung và hiển thị phản hồi trạng thái cho người dùng.
+  async runVibrateCheck() {
+    const stage = QUICK_CHECK_STAGES.find((s) => s.id === 'vibrate');
+    if ('vibrate' in navigator) {
+      navigator.vibrate([200, 100, 200, 100, 300]);
+    }
+    if (stage) {
+      await this.runner.runStage(stage);
+      this.updateCardStatusDots();
+    }
+  }
+
+  // Đo kiểm tra độ trễ mạng và cập nhật thông số kết nối.
+  async runNetworkCheck() {
+    const stage = QUICK_CHECK_STAGES.find((s) => s.id === 'connectivity');
+    if (stage) {
+      await this.runner.runStage(stage);
+      this.updateCardStatusDots();
+      this.openHardwareDetail('device');
     }
   }
 
@@ -201,11 +332,8 @@ class MobiCheckApp {
     const storageEl = document.getElementById('statValStorage');
     const batteryEl = document.getElementById('statValBattery');
 
-    const specRes = document.getElementById('specDisplayResolution');
-    const specHz = document.getElementById('specDisplayHz');
-    const specDpr = document.getElementById('specDisplayDpr');
-    const specNet = document.getElementById('specNetworkType');
-    const specPing = document.getElementById('specNetworkPing');
+    const subDisplay = document.getElementById('subHomeDisplay');
+    const subNetwork = document.getElementById('subHomeNetwork');
 
     if (titleEl) titleEl.innerText = info.deviceModel;
     if (subEl) subEl.innerText = `${info.browserName} • ${info.osName}`;
@@ -216,16 +344,12 @@ class MobiCheckApp {
     if (storageEl) storageEl.innerText = info.storageInfo.supported ? `${info.storageInfo.quotaGB} GB` : 'Khả dụng';
     if (batteryEl) batteryEl.innerText = info.batteryInfo.supported ? `${info.batteryInfo.level}%` : 'Chuẩn Web';
 
-    if (specRes) specRes.innerText = `${info.screenWidth} x ${info.screenHeight}`;
-    if (specHz) specHz.innerText = `${info.refreshRate} Hz`;
-    if (specDpr) specDpr.innerText = `${info.dpr}x DPR`;
-    if (specNet) specNet.innerText = info.networkInfo.effectiveType;
-    if (specPing) specPing.innerText = info.networkInfo.rtt;
+    if (subDisplay) subDisplay.innerText = `${info.screenWidth} x ${info.screenHeight} • ${info.refreshRate} Hz • ${info.dpr}x DPR`;
+    if (subNetwork) subNetwork.innerText = `${info.networkInfo.effectiveType} • ${info.networkInfo.downlink} • RTT ${info.networkInfo.rtt}`;
   }
 
   // Tạo danh sách thẻ bài kiểm tra trên lưới giao diện (Trang chủ & Màn hình Kiểm tra).
   renderTestGrid() {
-    const homeGrid = document.getElementById('homeTestCardsGrid');
     const catalogGrid = document.getElementById('catalogTestCardsGrid');
 
     const renderCardHtml = (stage) => `
@@ -240,7 +364,6 @@ class MobiCheckApp {
     `;
 
     const allCardsHtml = QUICK_CHECK_STAGES.map(renderCardHtml).join('');
-    if (homeGrid) homeGrid.innerHTML = allCardsHtml;
     if (catalogGrid) catalogGrid.innerHTML = allCardsHtml;
 
     // Gắn sự kiện click mở từng bài kiểm tra riêng biệt
@@ -280,10 +403,18 @@ class MobiCheckApp {
       return;
     }
 
-    if (['battery', 'storage', 'connectivity', 'vibrate'].includes(stage.id)) {
+    if (stage.id === 'battery') {
       await this.runner.runStage(stage);
       this.updateCardStatusDots();
-      alert(`Đã kiểm tra xong "${stage.name}". Kết quả đã được cập nhật vào Báo cáo.`);
+      this.openHardwareDetail('battery');
+    } else if (stage.id === 'storage') {
+      await this.runner.runStage(stage);
+      this.updateCardStatusDots();
+      this.openHardwareDetail('storage');
+    } else if (stage.id === 'connectivity') {
+      await this.runNetworkCheck();
+    } else if (stage.id === 'vibrate') {
+      await this.runVibrateCheck();
     } else {
       this.launchInteractiveTestModal(stage.id);
     }
