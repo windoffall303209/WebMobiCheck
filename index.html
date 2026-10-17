@@ -635,6 +635,26 @@
         </div>
       </div>
 
+      <!-- MODAL THÔNG BÁO TÙY CHỈNH (Thay thế window.alert native của trình duyệt) -->
+      <div class="mc-dialog-backdrop" id="modalNoticeDialog" role="dialog" aria-modal="true" aria-labelledby="noticeModalTitle">
+        <div class="mc-dialog-card">
+          <div class="mc-dialog-icon-wrapper" id="noticeModalIcon">
+            <svg><use href="assets/icons.svg#icon-alert"></use></svg>
+          </div>
+          <h3 class="mc-dialog-title" id="noticeModalTitle">Yêu cầu ứng dụng MobiCheck</h3>
+          <div class="mc-dialog-body" id="noticeModalBody">
+            Hạng mục này yêu cầu quyền Native sâu (IMEI, chu kỳ pin, phần cứng bo mạch). Vui lòng cài đặt ứng dụng Android MobiCheck để kiểm tra.
+          </div>
+          <div class="mc-dialog-actions" id="noticeModalActions">
+            <button type="button" class="btn-dialog-cancel" id="btnNoticeCancel">Hủy</button>
+            <a href="https://play.google.com/store/apps/details?id=com.luuthanh.appcaller&pcampaignid=web_share" target="_blank" rel="noopener noreferrer" class="btn-dialog-download" id="btnNoticeDownload">
+              <svg width="18" height="18"><use href="assets/icons.svg#icon-download"></use></svg>
+              <span>Tải app</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 

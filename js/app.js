@@ -44,12 +44,92 @@ class MobiCheckApp {
     this.bindNavigation();
     this.bindDrawerMenu();
     this.bindGlobalActions();
+    this.bindNoticeModal();
     this.renderTestGrid();
 
     // Nạp thông tin thiết bị
     this.deviceInfo = await getDeviceSummary();
     this.bindDeviceHeroUI(this.deviceInfo);
     this.updateCardStatusDots();
+  }
+
+  // Khởi tạo và gắn sự kiện cho hộp thoại thông báo tùy chỉnh thay thế window.alert native.
+  bindNoticeModal() {
+    const dialog = document.getElementById('modalNoticeDialog');
+    const btnCancel = document.getElementById('btnNoticeCancel');
+    const btnDownload = document.getElementById('btnNoticeDownload');
+
+    if (btnCancel) {
+      btnCancel.addEventListener('click', () => this.closeNoticeModal());
+    }
+
+    if (btnDownload) {
+      btnDownload.addEventListener('click', () => {
+        setTimeout(() => this.closeNoticeModal(), 300);
+      });
+    }
+
+    if (dialog) {
+      dialog.addEventListener('click', (e) => {
+        if (e.target === dialog) {
+          this.closeNoticeModal();
+        }
+      });
+    }
+  }
+
+  // Hiển thị hộp thoại thông báo tùy chỉnh thay thế popup native của trình duyệt.
+  showNoticeModal({
+    title = 'Yêu cầu ứng dụng MobiCheck',
+    message = '',
+    showDownload = true,
+    cancelText = 'Hủy',
+    downloadText = 'Tải app',
+    onCancel = null,
+    onDownload = null
+  } = {}) {
+    const dialog = document.getElementById('modalNoticeDialog');
+    const titleEl = document.getElementById('noticeModalTitle');
+    const bodyEl = document.getElementById('noticeModalBody');
+    const btnCancel = document.getElementById('btnNoticeCancel');
+    const btnDownload = document.getElementById('btnNoticeDownload');
+
+    if (!dialog) return;
+
+    if (titleEl) titleEl.innerText = title;
+    if (bodyEl) bodyEl.innerText = message;
+
+    if (btnCancel) {
+      btnCancel.innerText = cancelText;
+      btnCancel.onclick = () => {
+        this.closeNoticeModal();
+        if (typeof onCancel === 'function') onCancel();
+      };
+    }
+
+    if (btnDownload) {
+      if (showDownload) {
+        btnDownload.style.display = 'inline-flex';
+        const textSpan = btnDownload.querySelector('span');
+        if (textSpan) textSpan.innerText = downloadText;
+        btnDownload.onclick = () => {
+          setTimeout(() => this.closeNoticeModal(), 300);
+          if (typeof onDownload === 'function') onDownload();
+        };
+      } else {
+        btnDownload.style.display = 'none';
+      }
+    }
+
+    dialog.classList.add('active');
+  }
+
+  // Đóng hộp thoại thông báo tùy chỉnh.
+  closeNoticeModal() {
+    const dialog = document.getElementById('modalNoticeDialog');
+    if (dialog) {
+      dialog.classList.remove('active');
+    }
   }
 
   // Gắn sự kiện chuyển tab cho thanh điều hướng dưới đáy.
@@ -408,7 +488,13 @@ class MobiCheckApp {
     if (!stage) return;
 
     if (!stage.webSupported) {
-      alert(`Hạng mục "${stage.name}" yêu cầu quyền Native sâu (IMEI, chu kỳ pin, phần cứng bo mạch).\nVui lòng cài đặt ứng dụng Android MobiCheck để kiểm tra.`);
+      this.showNoticeModal({
+        title: stage.name || 'Yêu cầu ứng dụng MobiCheck',
+        message: `Hạng mục "${stage.name}" yêu cầu quyền Native sâu (IMEI, chu kỳ pin, phần cứng bo mạch).\n\nVui lòng cài đặt ứng dụng Android MobiCheck để kiểm tra.`,
+        showDownload: true,
+        cancelText: 'Hủy',
+        downloadText: 'Tải app'
+      });
       return;
     }
 
@@ -624,7 +710,13 @@ class MobiCheckApp {
 
     const micRes = await this.micTester.start();
     if (!micRes.success) {
-      alert(micRes.error);
+      this.showNoticeModal({
+        title: 'Microphone không khả dụng',
+        message: micRes.error || 'Trình duyệt bị từ chối quyền truy cập Micro. Hãy cấp quyền Micro trong trình duyệt hoặc cài đặt MobiCheck Android.',
+        showDownload: true,
+        cancelText: 'Hủy',
+        downloadText: 'Tải app'
+      });
     }
 
     if (btnRecord) {
@@ -684,7 +776,13 @@ class MobiCheckApp {
     const camRes = await this.cameraTester.start('environment');
 
     if (!camRes.success) {
-      alert(camRes.error);
+      this.showNoticeModal({
+        title: 'Camera không khả dụng',
+        message: camRes.error || 'Trình duyệt bị từ chối quyền truy cập Camera. Hãy cấp quyền Camera trong cài đặt hoặc cài đặt MobiCheck Android.',
+        showDownload: true,
+        cancelText: 'Hủy',
+        downloadText: 'Tải app'
+      });
     } else if (hudBadge) {
       hudBadge.innerText = `${camRes.width} x ${camRes.height}`;
     }
@@ -755,7 +853,13 @@ class MobiCheckApp {
 
     const res = await this.motionTester.start();
     if (!res.supported) {
-      alert(res.reason || 'Trình duyệt không hỗ trợ cảm biến chuyển động.');
+      this.showNoticeModal({
+        title: 'Cảm biến chuyển động',
+        message: res.reason || 'Trình duyệt không hỗ trợ đọc cảm biến chuyển động (DeviceOrientation/Motion). Vui lòng cài đặt ứng dụng Android MobiCheck để kiểm tra.',
+        showDownload: true,
+        cancelText: 'Hủy',
+        downloadText: 'Tải app'
+      });
     }
 
     const btnPass = document.getElementById('btnMotionPass');

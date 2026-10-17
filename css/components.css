@@ -1054,3 +1054,148 @@
   color: var(--mc-dim);
   line-height: 1.3;
 }
+
+/* ==========================================================================
+   Notice Dialog - Thông báo nội bộ thay thế window.alert native
+   ========================================================================== */
+.mc-dialog-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(18, 22, 27, 0.65);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 200ms cubic-bezier(0.16, 1, 0.3, 1), visibility 200ms ease;
+  box-sizing: border-box;
+}
+
+.mc-dialog-backdrop.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.mc-dialog-card {
+  width: 100%;
+  max-width: 380px;
+  background-color: var(--mc-panel);
+  border: 1px solid var(--mc-line);
+  border-radius: 20px;
+  box-shadow: 0 20px 45px -8px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  padding: 26px 22px 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transform: scale(0.92) translateY(10px);
+  transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+}
+
+.mc-dialog-backdrop.active .mc-dialog-card {
+  transform: scale(1) translateY(0);
+}
+
+.mc-dialog-icon-wrapper {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: rgba(21, 115, 53, 0.12);
+  color: var(--mc-brand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+
+.mc-dialog-icon-wrapper svg {
+  width: 28px;
+  height: 28px;
+}
+
+.mc-dialog-title {
+  font-size: 16.5px;
+  font-weight: 700;
+  color: var(--mc-fg);
+  margin-bottom: 8px;
+  line-height: 1.35;
+}
+
+.mc-dialog-body {
+  font-size: 13.5px;
+  color: var(--mc-dim);
+  line-height: 1.55;
+  margin-bottom: 22px;
+  word-break: break-word;
+  white-space: pre-line;
+}
+
+.mc-dialog-actions {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.btn-dialog-cancel {
+  flex: 1;
+  height: 44px;
+  border-radius: 12px;
+  background-color: var(--mc-panel2);
+  border: 1px solid var(--mc-line);
+  color: var(--mc-fg);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-dialog-cancel:hover {
+  background-color: #E2E8F0;
+  border-color: #CBD5E1;
+}
+
+.btn-dialog-cancel:active {
+  transform: translateY(1px);
+}
+
+.btn-dialog-download {
+  flex: 1.25;
+  height: 44px;
+  border-radius: 12px;
+  background-color: var(--mc-brand);
+  border: 1px solid transparent;
+  color: #FFFFFF;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+  box-shadow: 0 4px 12px rgba(21, 115, 53, 0.28);
+}
+
+.btn-dialog-download:hover {
+  background-color: #0F5C29;
+}
+
+.btn-dialog-download:active {
+  transform: translateY(1px);
+}
