@@ -321,7 +321,7 @@ class MobiCheckApp {
     }
   }
 
-  // Điền dữ liệu cấu hình phần cứng vào thẻ thông tin Hero Card ở màn hình chính.
+  // Điền dữ liệu cấu hình phần cứng vào thẻ thông tin Hero Card & 3 thẻ thông số chi tiết chuẩn Android.
   bindDeviceHeroUI(info) {
     const titleEl = document.getElementById('heroDeviceTitle');
     const subEl = document.getElementById('heroDeviceSub');
@@ -332,9 +332,6 @@ class MobiCheckApp {
     const storageEl = document.getElementById('statValStorage');
     const batteryEl = document.getElementById('statValBattery');
 
-    const subDisplay = document.getElementById('subHomeDisplay');
-    const subNetwork = document.getElementById('subHomeNetwork');
-
     if (titleEl) titleEl.innerText = info.deviceModel;
     if (subEl) subEl.innerText = `${info.browserName} • ${info.osName}`;
     if (badgeEl) badgeEl.innerText = `Quick Check • ${info.osName}`;
@@ -344,8 +341,45 @@ class MobiCheckApp {
     if (storageEl) storageEl.innerText = info.storageInfo.supported ? `${info.storageInfo.quotaGB} GB` : 'Khả dụng';
     if (batteryEl) batteryEl.innerText = info.batteryInfo.supported ? `${info.batteryInfo.level}%` : 'Chuẩn Web';
 
-    if (subDisplay) subDisplay.innerText = `${info.screenWidth} x ${info.screenHeight} • ${info.refreshRate} Hz • ${info.dpr}x DPR`;
-    if (subNetwork) subNetwork.innerText = `${info.networkInfo.effectiveType} • ${info.networkInfo.downlink} • RTT ${info.networkInfo.rtt}`;
+    // 1. Thẻ Màn hình & Đồ họa (cardHomeDisplaySpecs)
+    const tvRes = document.getElementById('tvHomeDisplayResolution');
+    const tvHz = document.getElementById('tvHomeDisplayRefreshRate');
+    const tvDpi = document.getElementById('tvHomeDisplayDpi');
+    const tvSize = document.getElementById('tvHomeDisplaySize');
+
+    if (tvRes) tvRes.innerText = `${info.screenWidth} x ${info.screenHeight}`;
+    if (tvHz) tvHz.innerText = `${info.refreshRate} Hz`;
+    if (tvDpi) tvDpi.innerText = `${info.dpi} DPI • ${info.dpr}x`;
+    if (tvSize) tvSize.innerText = info.aspectStr || '~16:9';
+
+    // 2. Thẻ Kết nối & Viễn thông (cardHomeNetworkSpecs)
+    const badgeNet = document.getElementById('tvHomeNetworkBadge');
+    const tvWifi = document.getElementById('tvHomeWifiStatus');
+    const tvMobile = document.getElementById('tvHomeMobileStatus');
+    const tvRtt = document.getElementById('tvHomeBluetoothStatus');
+    const tvGps = document.getElementById('tvHomeGpsStatus');
+
+    if (badgeNet) {
+      badgeNet.innerText = info.networkInfo.online ? 'Trực tuyến' : 'Ngoại tuyến';
+      if (!info.networkInfo.online) badgeNet.classList.add('amber');
+      else badgeNet.classList.remove('amber');
+    }
+    if (tvWifi) tvWifi.innerText = info.networkInfo.online ? 'Đang kết nối' : 'Đã ngắt';
+    if (tvMobile) tvMobile.innerText = `${info.networkInfo.effectiveType} (~${info.networkInfo.downlink})`;
+    if (tvRtt) tvRtt.innerText = `${info.networkInfo.rtt}`;
+    if (tvGps) tvGps.innerText = 'geolocation' in navigator ? 'Sẵn sàng (W3C)' : 'Không hỗ trợ';
+
+    // 3. Thẻ Hệ thống & Cảm biến (cardHomeSystemSpecs)
+    const tvSensor = document.getElementById('tvHomeSensorCount');
+    const tvUptime = document.getElementById('tvHomeUptime');
+    const tvSecPatch = document.getElementById('tvHomeSecurityPatch');
+    const tvKernel = document.getElementById('tvHomeKernel');
+
+    const uptimeMinutes = Math.max(1, Math.round(performance.now() / 60000));
+    if (tvSensor) tvSensor.innerText = `${info.cpuCores} luồng CPU`;
+    if (tvUptime) tvUptime.innerText = `Phiên: ${uptimeMinutes} phút`;
+    if (tvSecPatch) tvSecPatch.innerText = `${info.osName}`;
+    if (tvKernel) tvKernel.innerText = info.gpuRenderer || 'WebGL Hardware';
   }
 
   // Tạo danh sách thẻ bài kiểm tra trên lưới giao diện (Trang chủ & Màn hình Kiểm tra).

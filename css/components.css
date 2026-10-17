@@ -34,7 +34,7 @@
 }
 
 .device-mockup-wrapper {
-  width: 64px;
+  width: 60px;
   height: 80px;
   flex-shrink: 0;
   display: flex;
@@ -43,9 +43,11 @@
 }
 
 .device-mockup-wrapper svg {
-  width: 64px;
+  width: 60px;
   height: 80px;
   filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+  display: block;
+  overflow: visible;
 }
 
 .device-info-col {
@@ -384,21 +386,21 @@
   max-width: 100%;
 }
 
-/* 3 Thẻ thông số phần cứng chi tiết trên Home */
+/* 3 Thẻ thông số phần cứng chi tiết trên Home (Chuẩn Android cardHome...Specs) */
 .spec-action-cards {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
   margin-top: 4px;
 }
 
 .spec-action-card {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: 12px;
-  padding: 12px 14px;
+  padding: 14px 16px;
   cursor: pointer;
-  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
 }
 
 .spec-action-card:hover {
@@ -406,9 +408,21 @@
   border-color: #D1DDD4;
 }
 
+.spec-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.spec-card-icon-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .spec-card-icon {
-  width: 28px;
-  height: 28px;
+  width: 22px;
+  height: 22px;
   color: var(--mc-brand);
   display: flex;
   align-items: center;
@@ -417,27 +431,73 @@
 }
 
 .spec-card-icon svg {
-  width: 24px;
-  height: 24px;
-}
-
-.spec-card-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
+  width: 20px;
+  height: 20px;
 }
 
 .spec-card-title {
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--mc-fg);
+  line-height: 1.2;
 }
 
-.spec-card-sub {
-  font-size: 11px;
+.spec-card-header-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.spec-card-badge {
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  background-color: rgba(21, 115, 53, 0.1);
+  color: #157335;
+}
+
+.spec-card-badge.amber {
+  background-color: rgba(217, 119, 6, 0.1);
+  color: #B45309;
+}
+
+.spec-action-card .chevron-icon {
+  width: 16px;
+  height: 16px;
   color: var(--mc-dim);
+}
+
+/* Lưới 2x2 ô thống số bên trong mỗi thẻ phần cứng */
+.spec-grid-2x2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.spec-grid-box {
+  background-color: var(--mc-panel2);
+  border: 1px solid var(--mc-line);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.spec-box-label {
+  font-size: 10.5px;
+  color: var(--mc-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.spec-box-val {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--mc-fg);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

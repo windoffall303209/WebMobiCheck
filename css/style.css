@@ -198,6 +198,14 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+}
+
+.brand-logo-icon svg {
+  width: 28px;
+  height: 28px;
+  display: block;
+  overflow: visible;
 }
 
 .brand-text-col {

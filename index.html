@@ -19,7 +19,7 @@
       <header class="top-header">
         <div class="brand-badge-group">
           <div class="brand-logo-icon">
-            <svg width="28" height="28"><use href="assets/icons.svg#icon-logo"></use></svg>
+            <svg width="28" height="28" viewBox="-1 -1 34 34"><use href="assets/icons.svg#icon-logo"></use></svg>
           </div>
           <div class="brand-text-col">
             <span class="brand-title">MobiCheck</span>
@@ -43,7 +43,7 @@
             <div class="mc-card device-hero-card">
               <div class="device-header-row">
                 <div class="device-mockup-wrapper">
-                  <svg><use href="assets/icons.svg#icon-device-mockup"></use></svg>
+                  <svg viewBox="-2 -2 76 100"><use href="assets/icons.svg#icon-device-mockup"></use></svg>
                 </div>
                 <div class="device-info-col">
                   <h1 class="device-title" id="heroDeviceTitle">Đang nhận diện...</h1>
@@ -194,37 +194,109 @@
             </div>
 
             <div class="spec-action-cards">
+              <!-- Thẻ Màn hình & Đồ họa (Chuẩn Android cardHomeDisplaySpecs) -->
               <div class="mc-card spec-action-card clickable" id="cardHomeDisplaySpecs">
-                <div class="spec-card-icon">
-                  <svg><use href="assets/icons.svg#icon-display"></use></svg>
+                <div class="spec-card-header">
+                  <div class="spec-card-icon-title">
+                    <div class="spec-card-icon">
+                      <svg><use href="assets/icons.svg#icon-display"></use></svg>
+                    </div>
+                    <span class="spec-card-title">Màn hình & Đồ họa</span>
+                  </div>
+                  <div class="spec-card-header-right">
+                    <span class="spec-card-badge">Chuẩn hiển thị</span>
+                    <svg class="chevron-icon"><use href="assets/icons.svg#icon-chevron-right"></use></svg>
+                  </div>
                 </div>
-                <div class="spec-card-info">
-                  <span class="spec-card-title">Màn hình & Đồ họa</span>
-                  <span class="spec-card-sub" id="subHomeDisplay">Độ phân giải, Tần số quét, Tỉ lệ DPR</span>
+
+                <div class="spec-grid-2x2">
+                  <div class="spec-grid-box">
+                    <span class="spec-box-label">Độ phân giải</span>
+                    <span class="spec-box-val" id="tvHomeDisplayResolution">-- x --</span>
+                  </div>
+                  <div class="spec-grid-box">
+                    <span class="spec-box-label">Tần số quét</span>
+                    <span class="spec-box-val" id="tvHomeDisplayRefreshRate">-- Hz</span>
+                  </div>
+                  <div class="spec-grid-box">
+                    <span class="spec-box-label">Mật độ điểm ảnh</span>
+                    <span class="spec-box-val" id="tvHomeDisplayDpi">-- DPI</span>
+                  </div>
+                  <div class="spec-grid-box">
+                    <span class="spec-box-label">Kích thước / Tỉ lệ</span>
+                    <span class="spec-box-val" id="tvHomeDisplaySize">--</span>
+                  </div>
                 </div>
-                <svg class="chevron-icon"><use href="assets/icons.svg#icon-chevron-right"></use></svg>
               </div>
 
+              <!-- Thẻ Kết nối mạng & SIM (Chuẩn Android cardHomeNetworkSpecs) -->
               <div class="mc-card spec-action-card clickable" id="cardHomeNetworkSpecs">
-                <div class="spec-card-icon">
-                  <svg><use href="assets/icons.svg#icon-network"></use></svg>
+                <div class="spec-card-header">
+                  <div class="spec-card-icon-title">
+                    <div class="spec-card-icon">
+                      <svg><use href="assets/icons.svg#icon-network"></use></svg>
+                    </div>
+                    <span class="spec-card-title">Kết nối & Viễn thông</span>
+                  </div>
+                  <div class="spec-card-header-right">
+                    <span class="spec-card-badge" id="tvHomeNetworkBadge">Trực tuyến</span>
+                    <svg class="chevron-icon"><use href="assets/icons.svg#icon-chevron-right"></use></svg>
+                  </div>
                 </div>
-                <div class="spec-card-info">
-                  <span class="spec-card-title">Kết nối & Viễn thông</span>
-                  <span class="spec-card-sub" id="subHomeNetwork">Mạng trực tuyến, Băng thông, Độ trễ RTT</span>
+
+                <div class="spec-grid-2x2">
+                  <div class="spec-grid-box">
+                    <span class="spec-box-label">Wi-Fi / Mạng</span>
+                    <span class="spec-box-val" id="tvHomeWifiStatus">Đang kết nối</span>
+                  </div>
+                  <div class="spec-grid-box">
+                    <span class="spec-box-label">Băng thông & Kiểu</span>
+                    <span class="spec-box-val" id="tvHomeMobileStatus">--</span>
+                  </div>
+                  <div class="spec-grid-box">
+                    <span class="spec-box-label">Độ trễ RTT</span>
+                    <span class="spec-box-val" id="tvHomeBluetoothStatus">-- ms</span>
+                  </div>
+                  <div class="spec-grid-box">
+                    <span class="spec-box-label">Định vị GPS</span>
+                    <span class="spec-box-val" id="tvHomeGpsStatus">Sẵn sàng (W3C)</span>
+                  </div>
                 </div>
-                <svg class="chevron-icon"><use href="assets/icons.svg#icon-chevron-right"></use></svg>
               </div>
 
+              <!-- Thẻ Hệ thống & Cảm biến (Chuẩn Android cardHomeSystemSpecs) -->
               <div class="mc-card spec-action-card clickable" id="cardHomeSystemSpecs">
-                <div class="spec-card-icon">
-                  <svg><use href="assets/icons.svg#icon-sensor"></use></svg>
+                <div class="spec-card-header">
+                  <div class="spec-card-icon-title">
+                    <div class="spec-card-icon">
+                      <svg><use href="assets/icons.svg#icon-sensor"></use></svg>
+                    </div>
+                    <span class="spec-card-title">Hệ thống & Cảm biến</span>
+                  </div>
+                  <div class="spec-card-header-right">
+                    <span class="spec-card-badge">Hoạt động</span>
+                    <svg class="chevron-icon"><use href="assets/icons.svg#icon-chevron-right"></use></svg>
+                  </div>
                 </div>
-                <div class="spec-card-info">
-                  <span class="spec-card-title">Hệ thống & Cảm biến</span>
-                  <span class="spec-card-sub" id="subHomeSystem">Kiến trúc CPU, Bộ nhớ đệm, Con quay hồi chuyển</span>
+
+                <div class="spec-grid-2x2">
+                  <div class="spec-grid-box">
+                    <span class="spec-box-label">Luồng CPU & Lõi</span>
+                    <span class="spec-box-val" id="tvHomeSensorCount">-- luồng</span>
+                  </div>
+                  <div class="spec-grid-box">
+                    <span class="spec-box-label">Thời gian hoạt động</span>
+                    <span class="spec-box-val" id="tvHomeUptime">Phiên: --</span>
+                  </div>
+                  <div class="spec-grid-box">
+                    <span class="spec-box-label">Nền tảng HĐH</span>
+                    <span class="spec-box-val" id="tvHomeSecurityPatch">Windows</span>
+                  </div>
+                  <div class="spec-grid-box">
+                    <span class="spec-box-label">Kiến trúc / GPU</span>
+                    <span class="spec-box-val" id="tvHomeKernel">--</span>
+                  </div>
                 </div>
-                <svg class="chevron-icon"><use href="assets/icons.svg#icon-chevron-right"></use></svg>
               </div>
             </div>
           </div>
@@ -370,7 +442,7 @@
               <!-- Cột trái: Thông tin MobiCheck & Nút cài đặt -->
               <div class="about-left-col">
                 <div class="mc-card" style="text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 24px 16px;">
-                  <svg width="48" height="48"><use href="assets/icons.svg#icon-logo"></use></svg>
+                  <svg width="48" height="48" viewBox="-1 -1 34 34"><use href="assets/icons.svg#icon-logo"></use></svg>
                   <h2 style="font-size: 18px; font-weight: 700; color: var(--mc-brand);">MobiCheck — Quick Check</h2>
                   <span class="badge-pill green">Phiên bản Web 1.0</span>
                   <p style="font-size: 12.5px; color: var(--mc-dim); line-height: 1.45; margin-top: 4px;">
@@ -463,7 +535,7 @@
         <aside class="drawer-menu">
           <div class="drawer-header">
             <div class="brand-badge-group">
-              <svg width="24" height="24"><use href="assets/icons.svg#icon-logo"></use></svg>
+              <svg width="24" height="24" viewBox="-1 -1 34 34"><use href="assets/icons.svg#icon-logo"></use></svg>
               <span class="brand-title">MobiCheck</span>
             </div>
             <button class="icon-button" id="btnCloseDrawer" aria-label="Đóng menu">

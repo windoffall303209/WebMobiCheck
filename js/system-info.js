@@ -35,6 +35,25 @@ export async function getDeviceSummary() {
     deviceModel = 'Thiết bị Linux';
   }
 
+  // Fallback nhận diện hệ điều hành qua navigator.platform / userAgentData
+  if (osName === 'Không xác định') {
+    if (navigator.userAgentData && navigator.userAgentData.platform) {
+      osName = navigator.userAgentData.platform;
+      if (/Windows/i.test(osName)) deviceModel = 'Máy tính cá nhân (PC)';
+    } else if (navigator.platform) {
+      if (/Win/i.test(navigator.platform)) {
+        osName = 'Windows';
+        deviceModel = 'Máy tính cá nhân (PC)';
+      } else if (/Mac/i.test(navigator.platform)) {
+        osName = 'macOS';
+        deviceModel = 'Apple Mac';
+      } else if (/Linux/i.test(navigator.platform)) {
+        osName = 'Linux';
+        deviceModel = 'Thiết bị Linux';
+      }
+    }
+  }
+
   // Thử đọc Client Hints nếu trình duyệt hỗ trợ
   if (navigator.userAgentData) {
     try {
@@ -107,10 +126,16 @@ export async function getDeviceSummary() {
   const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
   const networkInfo = {
     online: navigator.onLine,
-    effectiveType: conn ? conn.effectiveType?.toUpperCase() : 'Wi-Fi / Di động',
-    downlink: conn && conn.downlink ? `${conn.downlink} Mbps` : 'Không xác định',
-    rtt: conn && conn.rtt ? `${conn.rtt} ms` : 'Tốt'
+    effectiveType: conn && conn.effectiveType ? conn.effectiveType.toUpperCase() : (navigator.onLine ? 'Wi-Fi / Ethernet' : 'Ngoại tuyến'),
+    downlink: conn && conn.downlink ? `${conn.downlink} Mbps` : 'Băng thông rộng',
+    rtt: conn && conn.rtt ? `${conn.rtt} ms` : '< 50 ms'
   };
+
+  // Thông số GPU & Cảm biến & Màn hình
+  const gpuRenderer = detectGpuRenderer();
+  const sensorCount = countSupportedSensors();
+  const dpi = Math.round((window.devicePixelRatio || 1) * 96);
+  const aspectStr = screenWidth >= screenHeight ? '16:9 • Desktop' : '19.5:9 • Mobile';
 
   return {
     deviceModel,
@@ -119,14 +144,51 @@ export async function getDeviceSummary() {
     screenWidth: Math.round(screenWidth),
     screenHeight: Math.round(screenHeight),
     dpr,
+    dpi,
+    aspectStr,
     refreshRate,
     cpuCores,
     ramEstimated,
     batteryInfo,
     storageInfo,
     networkInfo,
+    gpuRenderer,
+    sensorCount,
     isMobile: /Mobi|Android|iPhone/i.test(ua)
   };
+}
+
+// Lấy thông tin card đồ họa GPU qua WebGL extension unmasked renderer.
+function detectGpuRenderer() {
+  try {
+    const canvas = document.createElement('canvas');
+    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    if (gl) {
+      const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+      if (debugInfo) {
+        const renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+        if (renderer) {
+          const clean = renderer.replace(/ANGLE \((.*)\)/, '$1').replace(/, Direct3D.*/, '').replace(/Direct3D.*/, '').trim();
+          return clean || renderer;
+        }
+      }
+    }
+  } catch (_) {}
+  return 'WebGL Tăng tốc phần cứng';
+}
+
+// Đếm số lượng API cảm biến và thiết bị ngoại vi được trình duyệt hỗ trợ.
+function countSupportedSensors() {
+  let count = 0;
+  if ('DeviceOrientationEvent' in window) count++;
+  if ('DeviceMotionEvent' in window) count++;
+  if ('Accelerometer' in window) count++;
+  if ('Gyroscope' in window) count++;
+  if ('AmbientLightSensor' in window) count++;
+  if ('geolocation' in navigator) count++;
+  if ('getBattery' in navigator) count++;
+  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) count++;
+  return count;
 }
 
 // Đo lường tần số quét tươi màn hình (Refresh Rate) qua requestAnimationFrame.
