@@ -50,7 +50,6 @@ class MobiCheckApp {
     this.deviceInfo = await getDeviceSummary();
     this.bindDeviceHeroUI(this.deviceInfo);
     this.updateCardStatusDots();
-    this.renderReportScreen();
   }
 
   // Gắn sự kiện chuyển tab cho thanh điều hướng dưới đáy.
@@ -114,35 +113,15 @@ class MobiCheckApp {
     document.querySelectorAll('.bottom-nav .nav-item').forEach((item) => {
       item.classList.toggle('active', item.getAttribute('data-screen') === screenId);
     });
-
-    if (screenId === 'screenReport') {
-      this.renderReportScreen();
-    }
   }
 
   // Gắn sự kiện cho các nút hành động chính (Kiểm tra ngay, 4 ô thống kê, 8 nút kiểm tra nhanh).
   bindGlobalActions() {
     const btnStartCheck = document.getElementById('btnHomeStartCheck');
-    const btnRetest = document.getElementById('btnRetestAll');
-    const btnExportText = document.getElementById('btnExportReportText');
-    const btnPrintPdf = document.getElementById('btnPrintReport');
-    const btnDownloadApp = document.getElementById('btnBannerDownloadApp');
     const btnExploreTests = document.getElementById('btnExploreQuickTests');
 
     if (btnStartCheck) {
       btnStartCheck.addEventListener('click', () => this.startAutomatedSequence());
-    }
-    if (btnRetest) {
-      btnRetest.addEventListener('click', () => {
-        this.reportManager.resetSession();
-        this.startAutomatedSequence();
-      });
-    }
-    if (btnExportText) {
-      btnExportText.addEventListener('click', () => this.copyReportToClipboard());
-    }
-    if (btnPrintPdf) {
-      btnPrintPdf.addEventListener('click', () => window.print());
     }
 
     if (btnExploreTests) {
@@ -485,10 +464,7 @@ class MobiCheckApp {
   onRunnerFinished() {
     this.closeModal('modalRunner');
     this.updateCardStatusDots();
-    this.switchScreen('screenReport');
-    document.querySelectorAll('.bottom-nav .nav-item').forEach((i) => {
-      i.classList.toggle('active', i.getAttribute('data-screen') === 'screenReport');
-    });
+    this.switchScreen('screenTests');
   }
 
   // Mở modal kiểm tra tương tác theo ID bài kiểm tra.
@@ -822,58 +798,7 @@ class MobiCheckApp {
     if (m) m.classList.remove('active');
   }
 
-  // Hiển thị dữ liệu tổng hợp trên màn hình Báo cáo.
-  renderReportScreen() {
-    const stats = this.reportManager.getSummaryStats();
-    const scoreNum = document.getElementById('reportScoreNum');
-    const verifiedCount = document.getElementById('reportCountVerified');
-    const notConfirmedCount = document.getElementById('reportCountNotConfirmed');
-    const notSupportedCount = document.getElementById('reportCountNotSupported');
-    const listContainer = document.getElementById('reportItemsList');
 
-    if (scoreNum) scoreNum.innerText = `${stats.scorePercent}%`;
-    if (verifiedCount) verifiedCount.innerText = stats.verifiedCount + stats.userConfirmedCount;
-    if (notConfirmedCount) notConfirmedCount.innerText = stats.notConfirmedCount;
-    if (notSupportedCount) notSupportedCount.innerText = stats.notSupportedCount;
-
-    if (!listContainer) return;
-
-    const items = this.reportManager.getAllItems();
-    if (items.length === 0) {
-      listContainer.innerHTML = `
-        <div style="text-align: center; padding: 24px; color: var(--mc-dim);">
-          Chưa có bài kiểm tra nào được thực hiện.<br>Bấm "Kiểm tra tự động" để bắt đầu.
-        </div>
-      `;
-      return;
-    }
-
-    listContainer.innerHTML = items
-      .map(
-        (it) => `
-      <div class="report-item-card">
-        <div class="report-item-top">
-          <span class="report-item-title">${it.title}</span>
-          <span class="badge-pill ${it.status.badgeClass}">${it.status.code} • ${it.status.title}</span>
-        </div>
-        <div class="report-item-val">${it.summaryValue || 'Hoàn tất'}</div>
-        <div class="report-item-note">${it.evidenceNote || it.status.description}</div>
-      </div>
-    `
-      )
-      .join('');
-  }
-
-  // Sao chép báo cáo kết quả kiểm tra vào bộ nhớ đệm thiết bị.
-  async copyReportToClipboard() {
-    const text = this.reportManager.exportTextSummary(this.deviceInfo || {});
-    try {
-      await navigator.clipboard.writeText(text);
-      alert('Đã sao chép báo cáo kiểm tra vào bộ nhớ tạm thành công!');
-    } catch (_) {
-      alert('Không thể sao chép tự động. Vui lòng cho phép quyền truy cập Clipboard.');
-    }
-  }
 }
 
 // Khởi chạy ứng dụng khi DOM hoàn tất nạp

@@ -360,88 +360,9 @@
           </div>
         </section>
 
-        <!-- ==================== 3. BÁO CÁO KẾT QUẢ (SCREEN REPORT) ==================== -->
-        <section class="app-screen" id="screenReport">
-          <div class="page-content">
-            <div class="report-responsive-layout">
-              <!-- Cột trái: Điểm số, Giới hạn và Thao tác -->
-              <div class="report-left-col">
-                <!-- Điểm tổng kết và số lượng trạng thái -->
-                <div class="report-score-banner">
-                  <span style="font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.9;">
-                    Mức độ phản hồi chức năng
-                  </span>
-                  <div class="report-score-num" id="reportScoreNum">100%</div>
-                  <span style="font-size: 11.5px; opacity: 0.95;">
-                    Phiên kiểm tra hoàn tất qua Web Quick Check
-                  </span>
-
-                  <div class="report-summary-counts">
-                    <div class="count-card">
-                      <div class="count-card-val" id="reportCountVerified">0</div>
-                      <div class="count-card-lbl">Đã xác nhận</div>
-                    </div>
-                    <div class="count-card">
-                      <div class="count-card-val" id="reportCountNotConfirmed">0</div>
-                      <div class="count-card-lbl">Chưa xác nhận</div>
-                    </div>
-                    <div class="count-card">
-                      <div class="count-card-val" id="reportCountNotSupported">0</div>
-                      <div class="count-card-lbl">Giới hạn Web</div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Banner nhắc nhở Native -->
-                <div class="limitation-alert-banner">
-                  <div class="limitation-icon">
-                    <svg><use href="assets/icons.svg#icon-alert"></use></svg>
-                  </div>
-                  <div class="limitation-body">
-                    <span class="limitation-title">Cần kiểm tra phần cứng sâu hơn?</span>
-                    <p class="limitation-desc">
-                      Trình duyệt không thể đọc mã IMEI, bo mạch chip, độ chai pin chi tiết. Cài đặt MobiCheck Android để chạy Full Check.
-                    </p>
-                    <a href="https://play.google.com/store/apps/details?id=com.luuthanh.appcaller&pcampaignid=web_share" target="_blank" rel="noopener noreferrer" class="limitation-link-btn" style="margin-top: 4px;">
-                      Cài đặt trên Google Play &rarr;
-                    </a>
-                  </div>
-                </div>
-
-                <!-- Thao tác báo cáo -->
-                <div style="display: flex; gap: 8px;">
-                  <button class="btn-secondary" id="btnExportReportText" style="flex: 1;">
-                    <svg><use href="assets/icons.svg#icon-check"></use></svg>
-                    <span>Sao chép tóm tắt</span>
-                  </button>
-                  <button class="btn-secondary" id="btnPrintReport" style="flex: 1;">
-                    <svg><use href="assets/icons.svg#icon-storage"></use></svg>
-                    <span>In / Xuất PDF</span>
-                  </button>
-                </div>
-
-                <button class="btn-primary" id="btnRetestAll">
-                  <svg><use href="assets/icons.svg#icon-refresh"></use></svg>
-                  <span>Kiểm tra lại toàn bộ</span>
-                </button>
-              </div>
-
-              <!-- Cột phải: Chi tiết từng hạng mục -->
-              <div class="report-right-col">
-                <div class="section-header-row" style="margin-top: 0;">
-                  <span class="section-title">Chi tiết bằng chứng & Hạng mục</span>
-                </div>
-                <div id="reportItemsList" style="display: flex; flex-direction: column; gap: 8px;">
-                  <!-- Rendered via app.js -->
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
       </main>
 
-      <!-- Bottom Navigation Bar: 3 Tab chuẩn Quick Check -->
+      <!-- Bottom Navigation Bar: 2 Tab chuẩn Quick Check -->
       <nav class="bottom-nav">
         <button class="nav-item active" data-screen="screenHome">
           <svg><use href="assets/icons.svg#icon-device-mockup"></use></svg>
@@ -450,10 +371,6 @@
         <button class="nav-item" data-screen="screenTests">
           <svg><use href="assets/icons.svg#icon-check"></use></svg>
           <span>Kiểm tra</span>
-        </button>
-        <button class="nav-item" data-screen="screenReport">
-          <svg><use href="assets/icons.svg#icon-storage"></use></svg>
-          <span>Báo cáo</span>
         </button>
       </nav>
 
@@ -479,10 +396,7 @@
               <svg><use href="assets/icons.svg#icon-check"></use></svg>
               <span>Danh mục bài kiểm tra</span>
             </a>
-            <a href="#" class="drawer-link" data-screen="screenReport">
-              <svg><use href="assets/icons.svg#icon-storage"></use></svg>
-              <span>Báo cáo kết quả</span>
-            </a>
+
             <a href="https://play.google.com/store/apps/details?id=com.luuthanh.appcaller&pcampaignid=web_share" target="_blank" rel="noopener noreferrer" class="drawer-link">
               <svg><use href="assets/icons.svg#icon-download"></use></svg>
               <span>Cài đặt App trên Google Play</span>
